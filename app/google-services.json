@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612755565428",
+    "project_id": "couponify1-636d2",
+    "storage_bucket": "couponify1-636d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612755565428:android:2fe143e4413fca0005da21",
+        "android_client_info": {
+          "package_name": "com.example.couponify1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiYK-bTF4_JWLCcgFDQhwSnDPYBiPdHsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
