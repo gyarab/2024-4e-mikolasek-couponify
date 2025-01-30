@@ -18,12 +18,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class register extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextUsername;
     Button regbtn;
     FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     ProgressBar progressBar;
     TextView textview;
 /*
@@ -43,8 +49,10 @@ public class register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextUsername = findViewById(R.id.username);
         progressBar = findViewById(R.id.progressbar);
         textview = findViewById(R.id.logintext);
         textview.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +70,21 @@ public class register extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 String email = String.valueOf(editTextEmail.getText());
                 String password = String.valueOf(editTextPassword.getText());
+                String username = String.valueOf(editTextUsername.getText());
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(register.this, "Enter your email.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     Toast.makeText(register.this, "Enter your password.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(register.this, "Enter your username.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
@@ -78,7 +94,9 @@ public class register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    //FirebaseUser user = mAuth.getCurrentUser();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    String curuserid = Objects.requireNonNull(user).getUid();
+                                    addUserToDB(curuserid, username);
                                     Toast.makeText(register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), login.class);
@@ -92,5 +110,11 @@ public class register extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    private void addUserToDB(String curuserid, String username) {
+        ArrayList<User> friends = new ArrayList<>();
+        User user = new User(curuserid, username, friends);
+        mDatabase.child("users").child(curuserid).setValue(user);
     }
 }

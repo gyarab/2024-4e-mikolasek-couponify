@@ -10,7 +10,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <Button
         android:id="@+id/backbtn"
         android:text="@string/back"
