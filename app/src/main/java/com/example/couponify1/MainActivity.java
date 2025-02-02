@@ -1,5 +1,6 @@
 package com.example.couponify1;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +18,22 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
-    Button back_btn;
+    Button back_btn, addfriendsbtn;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        addfriendsbtn = findViewById(R.id.addfriendsbtn);
+        addfriendsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                startActivity(intent);
+            }
+        });
         back_btn = findViewById(R.id.backbtn);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override

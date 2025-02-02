@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -115,6 +116,22 @@ public class register extends AppCompatActivity {
     private void addUserToDB(String curuserid, String username) {
         ArrayList<User> friends = new ArrayList<>();
         User user = new User(curuserid, username, friends);
-        mDatabase.child("users").child(curuserid).setValue(user);
+        mDatabase.child("users").child(username).setValue(user);
+
+        /*mDatabase.child("users").child(username).child("friends").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(register.this, "failed",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(register.this, "has friendslist",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });*/
     }
+
+
 }

@@ -62,10 +62,12 @@ public class login extends AppCompatActivity {
                 String password = String.valueOf(editTextPassword.getText());
 
                 if (TextUtils.isEmpty(email)) {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(login.this, "Enter your email.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(login.this, "Enter your password.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -79,7 +81,7 @@ public class login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     String curuserid = user.getUid();
-                                    Toast.makeText(getApplicationContext(), "Logged in successfully. id: " + curuserid, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Logged in successfully.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
