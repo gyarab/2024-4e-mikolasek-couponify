@@ -16,6 +16,13 @@ public class User {
         this.friends = friends;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                '}';
+    }
+
     public void addfriend(User friend) {
         friends.add(friend);
     }

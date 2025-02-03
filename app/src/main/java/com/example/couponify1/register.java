@@ -83,7 +83,7 @@ public class register extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
-                if (TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(username)) {
                     Toast.makeText(register.this, "Enter your username.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
@@ -116,7 +116,7 @@ public class register extends AppCompatActivity {
     private void addUserToDB(String curuserid, String username) {
         ArrayList<User> friends = new ArrayList<>();
         User user = new User(curuserid, username, friends);
-        mDatabase.child("users").child(username).setValue(user);
+        mDatabase.child("users").child(curuserid).setValue(user);
 
         /*mDatabase.child("users").child(username).child("friends").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
