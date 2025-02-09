@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class User {
 
     private String id, username;
-    private ArrayList<User> friends;
+    private ArrayList<String> friends;
 
     public User() {
     }
 
-    public User(String id, String username, ArrayList<User> friends) {
+    public User(String id, String username, ArrayList<String> friends) {
         this.id = id;
         this.username = username;
         this.friends = friends;
@@ -21,10 +21,6 @@ public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 '}';
-    }
-
-    public void addfriend(User friend) {
-        friends.add(friend);
     }
 
     public String getId() {
@@ -43,11 +39,11 @@ public class User {
         this.username = username;
     }
 
-    public ArrayList<User> getFriends() {
+    public ArrayList<String> getFriends() {
         return friends;
     }
 
-    public void setFriends(ArrayList<User> friends) {
+    public void setFriends(ArrayList<String> friends) {
         this.friends = friends;
     }
 }

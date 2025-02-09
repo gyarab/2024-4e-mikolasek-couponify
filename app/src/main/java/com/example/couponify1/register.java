@@ -114,7 +114,7 @@ public class register extends AppCompatActivity {
     }
 
     private void addUserToDB(String curuserid, String username) {
-        ArrayList<User> friends = new ArrayList<>();
+        ArrayList<String> friends = new ArrayList<>();
         User user = new User(curuserid, username, friends);
         mDatabase.child("users").child(curuserid).setValue(user);
 
