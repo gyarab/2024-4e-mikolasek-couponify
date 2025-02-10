@@ -85,12 +85,18 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()) {
                     List<String> rqlist = (List<String>) snapshot.getValue();
-                    rqlist.add(curusername);
-                    mDatabase.child("rq").child(friendusername).setValue(rqlist);
+                    if (!rqlist.contains(curusername)) {
+                        rqlist.add(curusername);
+                        mDatabase.child("rq").child(friendusername).setValue(rqlist);
+                        Toast.makeText(context, "Friend request sent.",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     List<String> rqlist = new ArrayList<>();
                     rqlist.add(curusername);
                     mDatabase.child("rq").child(friendusername).setValue(rqlist);
+                    Toast.makeText(context, "Friend request sent.",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -99,7 +105,6 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
 
             }
         });
-
     }
 
     @Override
