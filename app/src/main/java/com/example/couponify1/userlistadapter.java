@@ -30,9 +30,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
     private List<User> userlist;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
     String curuserid, curusername;
-    ValueEventListener valueEventListener;
 
     public userlistadapter(Context context, List<User> userlist) {
         this.context = context;
@@ -121,13 +119,11 @@ class userlistholder extends RecyclerView.ViewHolder{
 
     TextView useritemusername;
     ImageButton addfriendbtn;
-    CardView user_item;
     public userlistholder(@NonNull View itemView) {
         super(itemView);
 
         useritemusername = itemView.findViewById(R.id.useritemusername);
         addfriendbtn = itemView.findViewById(R.id.addfriendbtn);
-        user_item = itemView.findViewById(R.id.user_item);
 
     }
 }

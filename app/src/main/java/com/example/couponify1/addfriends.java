@@ -2,6 +2,8 @@ package com.example.couponify1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class addfriends extends AppCompatActivity {
     FirebaseAuth mAuth;
     String curuserid, curusername;
     List<String> curuserfriends;
+    Button searchfriendsbtn, pendingrqbtn;
 
 
     @Override
@@ -51,7 +54,7 @@ public class addfriends extends AppCompatActivity {
         curuserid = authuser.getUid();
 
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
@@ -69,6 +72,26 @@ public class addfriends extends AppCompatActivity {
             }
         });
 
+        searchfriendsbtn = findViewById(R.id.searchfriendsbtn);
+        searchfriendsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        pendingrqbtn = findViewById(R.id.pendingrqbtn);
+        pendingrqbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), pendingrq.class);
+                intent.putExtra("curusername", curusername);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
 
 
@@ -83,7 +106,7 @@ public class addfriends extends AppCompatActivity {
         userlistadapter adapter = new userlistadapter(addfriends.this, userlist);
         addfriendsrv.setAdapter(adapter);
 
-        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userlist.clear();
@@ -96,7 +119,7 @@ public class addfriends extends AppCompatActivity {
                                 public void onResult(boolean hasRequest) {
                                     if (!hasRequest){
                                         userlist.add(user);
-                                        System.out.println(userlist);
+                                        //System.out.println(userlist);
                                         adapter.notifyDataSetChanged();
                                     }
                                 }
@@ -109,7 +132,7 @@ public class addfriends extends AppCompatActivity {
 
                     }
                 }
-                System.out.println("fianl "+userlist);
+                //System.out.println("fianl "+userlist);
                 adapter.notifyDataSetChanged();
             }
 
@@ -124,6 +147,7 @@ public class addfriends extends AppCompatActivity {
         void onResult(boolean hasRequest);
     }
 
+    //gemini
     public void hasrq(String curusername, String friend, HasRqCallback callback) {
         System.out.println("CHECKING IF " + curusername + " sent rq to " + friend);
 

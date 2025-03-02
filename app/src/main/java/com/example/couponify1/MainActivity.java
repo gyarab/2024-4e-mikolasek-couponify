@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                intent.putExtra("curusername", curusername);
                 startActivity(intent);
             }
         });

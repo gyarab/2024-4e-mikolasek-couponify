@@ -46,4 +46,8 @@ public class User {
     public void setFriends(ArrayList<String> friends) {
         this.friends = friends;
     }
+
+    public void addfriend(String friendusername) {
+        friends.add(friendusername);
+    }
 }
