@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class welcome extends AppCompatActivity {
     FirebaseAuth mAuth;
     Button wloginbtn, wregisterbtn;
-/*
+
     @Override
     public void onStart() {
         super.onStart();
@@ -27,7 +27,7 @@ public class welcome extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

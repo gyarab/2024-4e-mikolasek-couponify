@@ -8,46 +8,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <Button
-        android:id="@+id/backbtn"
-        android:text="@string/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/hellotext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello" />
+    tools:context=".MainActivity"
+    android:weightSum="100">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <Button
-            android:id="@+id/addfriendsbtn"
+            android:id="@+id/backbtn"
+            android:text="@string/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="add f" />
+            android:layout_marginRight="25dp"/>
 
-        <Button
-            android:id="@+id/button2"
+        <TextView
+            android:id="@+id/hellotext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:text="hello" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="98">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/friendslistrv"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnlayout"
+            android:layout_alignParentEnd="true"
+            android:layout_width="match_parent"
+            android:gravity="bottom"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:background="@color/black">
+
+            <ImageButton
+                android:id="@+id/addfriendsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_person_add_alt_1_24" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_local_activity_24" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_reviews_24" />
+<!--
+            <Button
+                android:id="@+id/addfriendsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="add f" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Button" />
+-->
+        </LinearLayout>
 
 </LinearLayout>
