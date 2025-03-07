@@ -7,48 +7,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".addfriends">
+    tools:context=".addfriends"
+    android:weightSum="100">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:background="@color/black"
+        >
 
-        <Button
+        <ImageButton
             android:id="@+id/searchfriendsbtn"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Search" />
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_person_search_24" />
 
-        <Button
+        <ImageButton
             android:id="@+id/pendingrqbtn"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Requests" />
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_move_to_inbox_24" />
     </LinearLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="98">
 
-        <SearchView
-            android:id="@+id/addfriendssearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:queryHint="Search new friends..."
-            android:searchHintIcon="@null"
-            android:iconifiedByDefault="false"
-            android:searchIcon="@drawable/baseline_search_24"
-            android:closeIcon="@drawable/baseline_close_24"
-            />
+    <SearchView
+        android:id="@+id/addfriendssearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:queryHint="Search new friends..."
+        android:searchHintIcon="@null"
+        android:iconifiedByDefault="false"
+        android:searchIcon="@drawable/baseline_search_24"
+        android:closeIcon="@drawable/baseline_close_24"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -56,6 +60,42 @@
         android:id="@+id/addfriendsrv"
         android:scrollbars="vertical"
         android:layout_margin="12dp" />
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btnlayout"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:background="@color/black">
+
+        <ImageButton
+            android:id="@+id/addfriendsbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_person_add_alt_1_24" />
+
+        <ImageButton
+            android:id="@+id/friendslistbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_local_activity_24" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_reviews_24" />
+    </LinearLayout>
+
+
 
 
 

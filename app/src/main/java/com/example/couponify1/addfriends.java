@@ -1,9 +1,12 @@
 package com.example.couponify1;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -41,13 +44,15 @@ public class addfriends extends AppCompatActivity {
     FirebaseAuth mAuth;
     String curuserid, curusername;
     List<String> curuserfriends;
-    Button searchfriendsbtn, pendingrqbtn;
+    ImageButton searchfriendsbtn, pendingrqbtn, friendslistbtn;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriends);
+        hideNavigationBars();
         mAuth = FirebaseAuth.getInstance();
         //get current user
         FirebaseUser authuser = mAuth.getCurrentUser();
@@ -92,6 +97,17 @@ public class addfriends extends AppCompatActivity {
             }
         });
 
+        friendslistbtn = findViewById(R.id.friendslistbtn);
+        friendslistbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 
@@ -173,5 +189,21 @@ public class addfriends extends AppCompatActivity {
                 callback.onResult(false); // Or handle the error in a different way
             }
         });
+    }
+    private void hideNavigationBars() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+        );
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideNavigationBars();
     }
 }

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         hideNavigationBars();
 
         Bundle bundle = getIntent().getExtras();
@@ -41,11 +42,8 @@ public class MainActivity extends AppCompatActivity {
             curusername = bundle.getString("username");
         }
         hellotext = findViewById(R.id.hellotext);
-        hellotext.setText("Hello, " + curusername);
-
-
-
-
+        String Hello = "Hello, " + curusername;
+        hellotext.setText(Hello);
 
         addfriendsbtn = findViewById(R.id.addfriendsbtn);
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
@@ -53,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), addfriends.class);
                 intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
+                finish();
             }
         });
+
         back_btn = findViewById(R.id.backbtn);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //failsafe for null user
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (user == null) {
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void hideNavigationBars() {
-        setContentView(R.layout.activity_main);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
