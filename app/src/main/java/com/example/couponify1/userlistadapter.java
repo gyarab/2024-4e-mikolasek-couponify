@@ -40,26 +40,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
     @NonNull
     @Override
     public userlistholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser authuser = mAuth.getCurrentUser();
-        curuserid = authuser.getUid();
-
-        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
-                    User userr = itemSnapshot.getValue(User.class);
-                    if (Objects.equals(userr.getId(), curuserid)) {
-                        curusername = userr.getUsername();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        findCuruser();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_listitem, parent, false);
         return new userlistholder(view);
     }
@@ -77,7 +58,6 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
     }
 
     private void createfriendrequest(String friendusername) {
-
         mDatabase.child("rq").child(friendusername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,6 +92,28 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
 
     public void searchusers(String searchedname){
 
+    }
+    private void findCuruser() {
+        mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser authuser = mAuth.getCurrentUser();
+        curuserid = authuser.getUid();
+
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
+                    User userr = itemSnapshot.getValue(User.class);
+                    if (Objects.equals(userr.getId(), curuserid)) {
+                        curusername = userr.getUsername();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }
 

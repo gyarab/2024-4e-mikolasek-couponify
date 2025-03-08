@@ -10,14 +10,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
@@ -28,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton addfriendsbtn;
     String curuserid, curusername;
     TextView hellotext;
+    RecyclerView friendslistrv;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -53,7 +64,33 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
-                finish();
+                //finish();
+            }
+        });
+
+        friendslistrv = findViewById(R.id.friendslistrv);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
+        friendslistrv.setLayoutManager(gridLayoutManager);
+
+        List<String> friendslist = new ArrayList<>();
+
+        friendslistadapter adapter = new friendslistadapter(MainActivity.this, friendslist);
+        friendslistrv.setAdapter(adapter);
+
+        databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
+        databaseReference.child("users").child(curuserid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
+                    String friend = (String) itemSnapshot.getValue();
+                    friendslist.add(friend);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -62,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), welcome.class);
+                boolean logout = true;
+                intent.putExtra("logout", logout);
                 startActivity(intent);
                 finish();
             }

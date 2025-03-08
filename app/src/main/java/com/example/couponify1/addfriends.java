@@ -53,8 +53,9 @@ public class addfriends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriends);
         hideNavigationBars();
-        mAuth = FirebaseAuth.getInstance();
+
         //get current user
+        mAuth = FirebaseAuth.getInstance();
         FirebaseUser authuser = mAuth.getCurrentUser();
         curuserid = authuser.getUid();
 
@@ -100,11 +101,11 @@ public class addfriends extends AppCompatActivity {
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {/*
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
-                startActivity(intent);
+                startActivity(intent);*/
                 finish();
             }
         });

@@ -86,9 +86,9 @@ public class pendingrq extends AppCompatActivity {
                 rqlist.clear();
                 for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
                     String request = itemsnapshot.getValue(String.class);
-                    rqlist.add(request);
-                    System.out.println(rqlist);
-                    adapter.notifyDataSetChanged();
+                    if (!curuserfriends.contains(request)) {
+                        rqlist.add(request);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

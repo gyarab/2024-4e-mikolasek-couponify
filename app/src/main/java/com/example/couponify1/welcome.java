@@ -34,7 +34,10 @@ public class welcome extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        attemptAutoLogin();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            attemptAutoLogin();
+        }
     }
 
     @Override
