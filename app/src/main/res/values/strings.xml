@@ -11,4 +11,6 @@
     <string name="don_t_have_an_account_register_here">Don\'t have an account? Register here.</string>
     <string name="back">Back</string>
     <string name="username">Username</string>
+    <string name="no_active_friend_requests">No active friend requests.</string>
+    <string name="no_active_coupons">No active coupons.</string>
 </resources>

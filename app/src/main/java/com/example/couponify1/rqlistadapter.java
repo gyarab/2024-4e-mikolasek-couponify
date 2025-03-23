@@ -12,12 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ import java.util.Objects;
 
 public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
     private Context context;
-    private List<String> rqlist;
+    private List<String> rqlist, curuserfriends;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     String curuserid, curusername;
@@ -59,6 +63,7 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curusername = userr.getUsername();
                         curuser = userr;
+                        curuserfriends = userr.getFriends();
                         break;
                     }
                 }
@@ -76,12 +81,13 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
     @Override
     public void onBindViewHolder(@NonNull rqlistholder holder, int position) {
         String item = rqlist.get(position);
-        System.out.println(item);
+        //System.out.println(item);
         holder.rqusername.setText(item);
         holder.denyrqbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                denyrq();
+                String friendusername = rqlist.get(holder.getAdapterPosition());
+                removerq(friendusername);
             }
         });
         holder.approverqbtn.setOnClickListener(new View.OnClickListener() {
@@ -94,20 +100,70 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
     }
 
     private void addfriend(String friendusername) {
-        if (curuser.getFriends() == null || curuser.getFriends().isEmpty()) {
-            ArrayList<String> friends = new ArrayList<>();
+        if (curuserfriends.isEmpty() || curuserfriends == null) {
+            System.out.println("curusergetfriends is empty");
+            List<String> friends = new ArrayList<>();
             friends.add(friendusername);
             mDatabase.child("users").child(curuserid).child("friends").setValue(friends);
         } else {
-            ArrayList<String> friends = curuser.getFriends();
-            friends.add(friendusername);
-            mDatabase.child("users").child(curuserid).child("friends").setValue(friends);
+            curuserfriends.add(friendusername);
+            mDatabase.child("users").child(curuserid).child("friends").setValue(curuserfriends);
         }
+
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
+                    User userr = itemsnapshot.getValue(User.class);
+                    if (userr.getUsername().equals(friendusername)) {
+                        String userrid = userr.getId();
+                        System.out.println(userrid);
+                        mDatabase.child("users").child(userrid).child("friends").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                List<String> userfriends = (List<String>) task.getResult().getValue();
+                                if (userfriends.isEmpty() || userfriends == null) {
+                                    List<String> friendlist = new ArrayList<>();
+                                    friendlist.add(curusername);
+                                    mDatabase.child("users").child(userr.getId()).child("friends").setValue(friendlist);
+                                } else {
+                                    List<String> friendlist = userfriends;
+                                    friendlist.add(curusername);
+                                    mDatabase.child("users").child(userr.getId()).child("friends").setValue(friendlist);
+                                }
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        removerq(friendusername);
         Toast.makeText(context, "Friend added.",
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void denyrq() {
+    private void removerq(String friendusername) {
+        mDatabase.child("rq").child(curusername).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                List<String> list = snapshot.getValue(t);
+                list.remove(friendusername);
+                mDatabase.child("rq").child(curusername).setValue(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

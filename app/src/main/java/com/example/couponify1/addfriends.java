@@ -44,7 +44,7 @@ public class addfriends extends AppCompatActivity {
     FirebaseAuth mAuth;
     String curuserid, curusername;
     List<String> curuserfriends;
-    ImageButton searchfriendsbtn, pendingrqbtn, friendslistbtn;
+    ImageButton pendingrqbtn, friendslistbtn;
 
 
     @SuppressLint("MissingInflatedId")
@@ -68,7 +68,7 @@ public class addfriends extends AppCompatActivity {
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curusername = userr.getUsername();
                         curuserfriends = userr.getFriends();
-                        Toast.makeText(getApplicationContext(), "Logged in as " + curusername, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Logged in as " + curusername, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -78,15 +78,7 @@ public class addfriends extends AppCompatActivity {
             }
         });
 
-        searchfriendsbtn = findViewById(R.id.searchfriendsbtn);
-        searchfriendsbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
         pendingrqbtn = findViewById(R.id.pendingrqbtn);
         pendingrqbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,12 +158,12 @@ public class addfriends extends AppCompatActivity {
 
     //gemini
     public void hasrq(String curusername, String friend, HasRqCallback callback) {
-        System.out.println("CHECKING IF " + curusername + " sent rq to " + friend);
+        //System.out.println("CHECKING IF " + curusername + " sent rq to " + friend);
 
         databaseReference.child("rq").child(friend).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println("ondatachange probiha pro " + friend);
+                //System.out.println("ondatachange probiha pro " + friend);
                 ArrayList<String> temp = null;
                 GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {};
                 temp = snapshot.getValue(genericTypeIndicator);
@@ -179,15 +171,14 @@ public class addfriends extends AppCompatActivity {
                 if (temp != null) {
                     hasRequest = temp.contains(curusername);
                 }
-                System.out.println("should be " + hasRequest);
+                //System.out.println("should be " + hasRequest);
                 callback.onResult(hasRequest); // Call the callback with the result
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error if necessary
                 System.err.println("Database error: " + error.getMessage());
-                callback.onResult(false); // Or handle the error in a different way
+                callback.onResult(false);
             }
         });
     }

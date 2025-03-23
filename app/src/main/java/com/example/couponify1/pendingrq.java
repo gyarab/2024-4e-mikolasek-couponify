@@ -3,7 +3,10 @@ package com.example.couponify1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,19 +32,20 @@ import java.util.Objects;
 
 public class pendingrq extends AppCompatActivity {
 
-    Button searchfriendsbtn2, pendingrqbtn2;
-
+    ImageButton searchfriendsbtn2, friendslistbtn;
     FirebaseAuth mAuth;
     String curuserid, curusername;
     DatabaseReference databaseReference;
     List<String> curuserfriends;
     RecyclerView pendigrqrv;
     List<String> rqlist;
+    TextView norqalerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pendingrq);
+        hideNavigationBars();
         mAuth = FirebaseAuth.getInstance();
 
         Bundle bundle = getIntent().getExtras();
@@ -69,7 +73,7 @@ public class pendingrq extends AppCompatActivity {
             }
         });
 
-
+        norqalerts = findViewById(R.id.norqalert);
         pendigrqrv = findViewById(R.id.pendingrqrv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(pendingrq.this, 1);
         pendigrqrv.setLayoutManager(gridLayoutManager);
@@ -79,18 +83,19 @@ public class pendingrq extends AppCompatActivity {
         rqlistadapter adapter = new rqlistadapter(pendingrq.this, rqlist);
         pendigrqrv.setAdapter(adapter);
 
-        System.out.println(curusername);
+        //System.out.println(curusername);
         databaseReference.child("rq").child(curusername).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 rqlist.clear();
                 for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
                     String request = itemsnapshot.getValue(String.class);
-                    if (!curuserfriends.contains(request)) {
                         rqlist.add(request);
-                    }
                 }
                 adapter.notifyDataSetChanged();
+                if (rqlist.isEmpty()) {
+                    norqalerts.setVisibility(View.VISIBLE);
+                } else {norqalerts.setVisibility(View.GONE);}
             }
 
             @Override
@@ -108,14 +113,28 @@ public class pendingrq extends AppCompatActivity {
                 finish();
             }
         });
-        pendingrqbtn2 = findViewById(R.id.pendingrqbtn2);
-        pendingrqbtn2.setOnClickListener(new View.OnClickListener() {
+        friendslistbtn = findViewById(R.id.friendslistbtn);
+        friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), pendingrq.class);
-                startActivity(intent);
                 finish();
             }
         });
+    }
+    private void hideNavigationBars() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+        );
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideNavigationBars();
     }
 }

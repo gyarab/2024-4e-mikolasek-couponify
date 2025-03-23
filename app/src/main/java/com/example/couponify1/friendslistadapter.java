@@ -53,7 +53,9 @@ public class friendslistadapter extends RecyclerView.Adapter<friendslistholder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, frienddetail.class);
-                intent.putExtra("friendsname", friendname);
+                intent.putExtra("selectedfriend", friendname);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 context.startActivity(intent);
             }
         });

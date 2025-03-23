@@ -11,33 +11,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:background="@color/black"
+        >
 
-        <Button
+        <ImageButton
             android:id="@+id/searchfriendsbtn2"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Search" />
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_person_search_24" />
 
-        <Button
-            android:id="@+id/pendingrqbtn2"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+        <ImageButton
+            android:id="@+id/pendingrqbtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Requests" />
+            android:backgroundTint="@color/black"
+            android:src="@drawable/outline_move_to_inbox_24_pressed" />
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="98">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/norqalert"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/no_active_friend_requests"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -45,6 +58,39 @@
         android:id="@+id/pendingrqrv"
         android:scrollbars="vertical"
         android:layout_margin="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:background="@color/black">
+
+        <ImageButton
+            android:id="@+id/addfriendsbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/outline_person_add_alt_1_24_pressed" />
+
+        <ImageButton
+            android:id="@+id/friendslistbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_local_activity_24" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_reviews_24" />
+    </LinearLayout>
 
 
 

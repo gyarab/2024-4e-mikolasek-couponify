@@ -1,5 +1,13 @@
 package com.example.couponify1;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class User {
@@ -40,7 +48,24 @@ public class User {
     }
 
     public ArrayList<String> getFriends() {
-        return friends;
+        ArrayList<String> friendlist = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
+        databaseReference.child("users").child(id).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
+                    String friend = itemsnapshot.getValue(String.class);
+                    friendlist.add(friend);
+                    System.out.println("getfriends vysledek " + friendlist);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return friendlist;
     }
 
     public void setFriends(ArrayList<String> friends) {
