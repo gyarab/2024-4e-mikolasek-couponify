@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         hideNavigationBars();
         requestNotifPermission();
 
@@ -76,11 +77,17 @@ public class MainActivity extends AppCompatActivity {
             curuserid = bundle.getString("id");
             curusername = bundle.getString("username");
         }
+        //failsafe for null user
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        if (user == null || curuserid == null) {
+            Intent intent = new Intent(getApplicationContext(), welcome.class);
+            startActivity(intent);
+            finish();
+        }
         hellotext = findViewById(R.id.hellotext);
         String Hello = "Hello, " + curusername;
         hellotext.setText(Hello);
-
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
 
         addfriendsbtn = findViewById(R.id.addfriendsbtn);
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
@@ -90,13 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        SendNotification sn = new SendNotification();
-                        sn.SendPushNotification("yeet", "Lebron", "fU7_rCbcS9CIQIt22ANzeG:APA91bGtLN4ULvGPNqGVvIyiEP8z4AkeinZdmZNSWVU0a0oMFIf4fSAXFFQ-GER8WnQPluvVsCoVb0py42mPmBUm3nIaXCNEyvExW0BmuRanTyNpLyzjhwI");
-                    }
-                });
+                sendNotifFull("Friend request received!", "NAME has sent you a friend request.", "fU7_rCbcS9CIQIt22ANzeG:APA91bGtLN4ULvGPNqGVvIyiEP8z4AkeinZdmZNSWVU0a0oMFIf4fSAXFFQ-GER8WnQPluvVsCoVb0py42mPmBUm3nIaXCNEyvExW0BmuRanTyNpLyzjhwI");
                 //finish();
             }
         });
@@ -140,14 +141,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //failsafe for null user
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        if (user == null) {
-            Intent intent = new Intent(getApplicationContext(), login.class);
-            startActivity(intent);
-            finish();
-        }
+
     }
 
     private void hideNavigationBars() {
