@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Couponify1</string>
+    <string name="app_name">Couponify</string>
     <string name="login">Login</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="register">Register</string>

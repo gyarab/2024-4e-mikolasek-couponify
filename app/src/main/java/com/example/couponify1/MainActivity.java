@@ -1,8 +1,13 @@
 package com.example.couponify1;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -10,14 +15,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,20 +35,33 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
+    Boolean notifpermgranted;
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference databaseReference;
     Button back_btn;
-
     ImageButton addfriendsbtn;
-    String curuserid, curusername;
+    String curuserid, curusername, curusertoken;
     TextView hellotext;
     RecyclerView friendslistrv;
+
+    private ActivityResultLauncher <String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+        if (isGranted){
+            notifpermgranted = true;
+            getDeviceToken();
+        } else {
+            //notif not granted
+        }
+    });
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         hideNavigationBars();
+        requestNotifPermission();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -56,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         String Hello = "Hello, " + curusername;
         hellotext.setText(Hello);
 
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+
         addfriendsbtn = findViewById(R.id.addfriendsbtn);
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification sn = new SendNotification();
+                        sn.SendPushNotification("yeet", "Lebron", "fU7_rCbcS9CIQIt22ANzeG:APA91bGtLN4ULvGPNqGVvIyiEP8z4AkeinZdmZNSWVU0a0oMFIf4fSAXFFQ-GER8WnQPluvVsCoVb0py42mPmBUm3nIaXCNEyvExW0BmuRanTyNpLyzjhwI");
+                    }
+                });
                 //finish();
             }
         });
@@ -98,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                auth.signOut();
                 Intent intent = new Intent(getApplicationContext(), welcome.class);
                 boolean logout = true;
                 intent.putExtra("logout", logout);
@@ -132,6 +166,48 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         hideNavigationBars();
+    }
+
+    public void requestNotifPermission () {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                notifpermgranted = true;
+                getDeviceToken();
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                //TODO: show info about notif permission
+                System.out.println("notifs disabled :(");
+            } else {
+                resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        } else {
+            getDeviceToken();
+        }
+    }
+
+    public void getDeviceToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("logs", " Fetching token failed " + task.getException());
+                    return;
+                }
+                curusertoken = task.getResult();
+                System.out.println("device token: " + curusertoken);
+                databaseReference.child("Tokens").child(curuserid).setValue(curusertoken);
+            }
+        });
+    }
+
+    public void sendNotifFull(String title, String desc, String token){
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                SendNotification sn = new SendNotification();
+                sn.SendPushNotification(title, desc, token);
+            }
+        });
     }
 
 }
