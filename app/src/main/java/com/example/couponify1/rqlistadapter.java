@@ -1,6 +1,7 @@
 package com.example.couponify1;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
     private Context context;
@@ -110,19 +113,20 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
             mDatabase.child("users").child(curuserid).child("friends").setValue(curuserfriends);
         }
 
-        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                     User userr = itemsnapshot.getValue(User.class);
                     if (userr.getUsername().equals(friendusername)) {
                         String userrid = userr.getId();
+                        sendNotifWithID("Friend request accepted!", curusername + " has added you as a friend.", userrid);
                         System.out.println(userrid);
                         mDatabase.child("users").child(userrid).child("friends").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 List<String> userfriends = (List<String>) task.getResult().getValue();
-                                if (userfriends.isEmpty() || userfriends == null) {
+                                if (userfriends == null || userfriends.isEmpty() ) {
                                     List<String> friendlist = new ArrayList<>();
                                     friendlist.add(curusername);
                                     mDatabase.child("users").child(userr.getId()).child("friends").setValue(friendlist);
@@ -137,13 +141,7 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
                     }
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
         });
-
         removerq(friendusername);
         Toast.makeText(context, "Friend added.",
                 Toast.LENGTH_SHORT).show();
@@ -169,6 +167,22 @@ public class rqlistadapter extends RecyclerView.Adapter<rqlistholder> {
     @Override
     public int getItemCount() {
         return rqlist.size();
+    }
+    public void sendNotifWithID(String title, String desc, String friendid){
+        mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                String token = task.getResult().getValue(String.class);
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification sn = new SendNotification();
+                        sn.SendPushNotification(title, desc, token);
+                    }
+                });
+            }
+        });
     }
 }
 class rqlistholder extends RecyclerView.ViewHolder{

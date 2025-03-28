@@ -63,7 +63,7 @@ public class pendingrq extends AppCompatActivity {
                     User userr = itemSnapshot.getValue(User.class);
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curuserfriends = userr.getFriends();
-                        Toast.makeText(getApplicationContext(), "Logged in as " + curusername, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Logged in as " + curusername, Toast.LENGTH_SHORT).show();
                     }
                 }
             }

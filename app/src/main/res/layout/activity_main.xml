@@ -13,21 +13,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/black"
+        android:layout_height="40dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/backbtn"
-            android:text="@string/back"
+        <ImageButton
+            android:id="@+id/logoutbtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"/>
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_output_24_red"/>
 
         <TextView
             android:id="@+id/hellotext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/white"
             android:text="hello" />
 
     </LinearLayout>
@@ -37,6 +40,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="98">
+
+        <LinearLayout
+            android:id="@+id/btnlayouttop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/black">
+
+            <ImageButton
+                android:id="@+id/friendsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_person_outline_24" />
+
+            <ImageButton
+                android:id="@+id/activecouponsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_announcement_24" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

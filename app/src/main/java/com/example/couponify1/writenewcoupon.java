@@ -1,5 +1,6 @@
 package com.example.couponify1;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class writenewcoupon extends AppCompatActivity {
 
@@ -75,7 +79,10 @@ public class writenewcoupon extends AppCompatActivity {
             public void onClick(View view) {
                 String coupontitle = String.valueOf(edittexttitle.getText());
                 String coupondesc = String.valueOf(edittextdesc.getText());
-                Coupon coupon = new Coupon(coupontitle, coupondesc, curusername, selectedfriend);
+                Coupon coupon = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    coupon = new Coupon(coupontitle, coupondesc, curusername, selectedfriend);
+                }
                 if (selectedfriendcoupons == null || selectedfriendcoupons.isEmpty()) {
                     List<Coupon> list = new ArrayList<>();
                     list.add(coupon);
@@ -84,7 +91,7 @@ public class writenewcoupon extends AppCompatActivity {
                     selectedfriendcoupons.add(coupon);
                     mDatabase.child("users").child(selectedfriendid).child("coupons").setValue(selectedfriendcoupons);
                 }
-
+                sendNotifFull("New coupon received!", "you have received a new coupon from " + curusername, selectedfriendid);
             }
         });
     }
@@ -105,5 +112,21 @@ public class writenewcoupon extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         hideNavigationBars();
+    }
+    public void sendNotifFull(String title, String desc, String friendid){
+        mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                String token = task.getResult().getValue(String.class);
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification sn = new SendNotification();
+                        sn.SendPushNotification(title, desc, token);
+                    }
+                });
+            }
+        });
     }
 }

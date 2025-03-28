@@ -13,4 +13,5 @@
     <string name="username">Username</string>
     <string name="no_active_friend_requests">No active friend requests.</string>
     <string name="no_active_coupons">No active coupons.</string>
+    <string name="no_available_coupons">No available coupons.</string>
 </resources>

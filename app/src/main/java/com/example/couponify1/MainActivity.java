@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference databaseReference;
-    Button back_btn;
-    ImageButton addfriendsbtn;
+    ImageButton addfriendsbtn, logoutbtn, activecouponsbtn;
     String curuserid, curusername, curusertoken;
     TextView hellotext;
     RecyclerView friendslistrv;
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
-                sendNotifFull("Friend request received!", "NAME has sent you a friend request.", "fU7_rCbcS9CIQIt22ANzeG:APA91bGtLN4ULvGPNqGVvIyiEP8z4AkeinZdmZNSWVU0a0oMFIf4fSAXFFQ-GER8WnQPluvVsCoVb0py42mPmBUm3nIaXCNEyvExW0BmuRanTyNpLyzjhwI");
                 //finish();
             }
         });
@@ -128,20 +126,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        back_btn = findViewById(R.id.backbtn);
-        back_btn.setOnClickListener(new View.OnClickListener() {
+        activecouponsbtn = findViewById(R.id.activecouponsbtn);
+        activecouponsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ActiveCoupons.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+            }
+        });
+
+        logoutbtn = findViewById(R.id.logoutbtn);
+        logoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 auth.signOut();
                 Intent intent = new Intent(getApplicationContext(), welcome.class);
-                boolean logout = true;
-                intent.putExtra("logout", logout);
+                /*boolean logout = true;
+                intent.putExtra("logout", logout);*/
                 startActivity(intent);
                 finish();
             }
         });
-
-
     }
 
     private void hideNavigationBars() {

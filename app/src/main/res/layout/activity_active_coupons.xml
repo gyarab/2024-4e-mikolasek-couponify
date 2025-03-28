@@ -1,29 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frienddetail"
+    android:id="@+id/activecoupons"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frienddetail"
-    android:weightSum="100"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ActiveCoupons"
+    android:weightSum="100">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:layout_weight="1"/>
+        android:orientation="horizontal"
+        android:background="@color/black"
+        android:layout_height="40dp"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/logoutbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_output_24_red"/>
+
+        <TextView
+            android:id="@+id/hellotext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/white"
+            android:text="hello" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="98"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="98">
+
+        <LinearLayout
+            android:id="@+id/btnlayouttop"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/black">
+
+            <ImageButton
+                android:id="@+id/friendsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_person_24" />
+
+            <ImageButton
+                android:id="@+id/activecouponsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/outline_announcement_24" />
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,28 +72,20 @@
             android:gravity="center"
             android:layout_margin="20dp"
             android:layout_marginTop="40dp"
-            android:text="@string/no_available_coupons"/>
+            android:text="@string/no_active_coupons"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/couponlistrv"
-            android:scrollbars="vertical"
+            android:id="@+id/activecouponsrv"
             android:layout_margin="12dp"
-            />
-
+            >
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="end|bottom"
-        android:id="@+id/writecouponbtn"
-        android:src="@drawable/baseline_add_24" />
-
     <LinearLayout
+        android:id="@+id/btnlayout"
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:layout_height="50dp"
@@ -84,4 +116,5 @@
             android:backgroundTint="@color/black"
             android:src="@drawable/baseline_reviews_24" />
     </LinearLayout>
+
 </LinearLayout>

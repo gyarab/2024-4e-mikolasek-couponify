@@ -98,14 +98,13 @@ public class login extends AppCompatActivity {
                                     curuserid = authuser.getUid();
 
                                     databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference("users");
-                                    valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
+                                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
                                                 User userr = itemSnapshot.getValue(User.class);
                                                 if (Objects.equals(userr.getId(), curuserid)) {
                                                     curusername = userr.getUsername();
-                                                    Toast.makeText(getApplicationContext(), "Logged in successfully as " + curusername, Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                     intent.putExtra("id", curuserid);
                                                     intent.putExtra("username", curusername);

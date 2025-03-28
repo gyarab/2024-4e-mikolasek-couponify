@@ -28,6 +28,9 @@ public class Coupon {
         return createdon;
     }
 
+    public void setCreatedon(String createdon) {
+        this.createdon = createdon;
+    }
 /*
     public String getCreatedon() {
         DateTimeFormatter formatter = null;

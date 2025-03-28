@@ -2,26 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/activecoupon"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".coupondetail"
+    tools:context=".activecoupondetail"
     android:gravity="center|top">
 
     <TextView
-        android:id="@+id/coupondetailtitle"
+        android:id="@+id/activecoupondetailtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView" />
     <TextView
-        android:id="@+id/coupondetaildate"
+        android:id="@+id/activecoupondetaildate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/coupondetaildesc"
+        android:id="@+id/activecoupondetaildesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView" />

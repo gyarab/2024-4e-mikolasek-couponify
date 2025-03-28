@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
     private Context context;
@@ -66,6 +70,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
                     if (!rqlist.contains(curusername)) {
                         rqlist.add(curusername);
                         mDatabase.child("rq").child(friendusername).setValue(rqlist);
+                        sendNotifFull("Friend request received!", curusername + " has sent you a friend request.", friendusername);
                         Toast.makeText(context, "Friend request sent.",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -73,6 +78,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
                     List<String> rqlist = new ArrayList<>();
                     rqlist.add(curusername);
                     mDatabase.child("rq").child(friendusername).setValue(rqlist);
+
                     Toast.makeText(context, "Friend request sent.",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -112,6 +118,33 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    public void sendNotifFull(String title, String desc, String friendusername){
+        mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                    User userr = itemsnapshot.getValue(User.class);
+                    if (Objects.equals(userr.getUsername(), friendusername)) {
+                        String friendid = userr.getId();
+                        mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                String token = task.getResult().getValue(String.class);
+                                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                                executor.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        SendNotification sn = new SendNotification();
+                                        sn.SendPushNotification(title, desc, token);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
             }
         });
     }
