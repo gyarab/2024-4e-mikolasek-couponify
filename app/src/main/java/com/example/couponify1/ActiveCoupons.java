@@ -55,14 +55,10 @@ public class ActiveCoupons extends AppCompatActivity {
         friendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-            }
-        });
-
-        friendslistbtn = findViewById(R.id.friendslistbtn);
-        friendslistbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });
@@ -85,8 +81,6 @@ public class ActiveCoupons extends AppCompatActivity {
             public void onClick(View v) {
                 auth.signOut();
                 Intent intent = new Intent(getApplicationContext(), welcome.class);
-                /*boolean logout = true;
-                intent.putExtra("logout", logout);*/
                 startActivity(intent);
                 finish();
             }

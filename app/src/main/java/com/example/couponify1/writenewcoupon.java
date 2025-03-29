@@ -1,5 +1,6 @@
 package com.example.couponify1;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,9 +35,9 @@ import java.util.concurrent.Executors;
 
 public class writenewcoupon extends AppCompatActivity {
 
-    String selectedfriend, selectedfriendid, curusername;
+    String selectedfriend, selectedfriendid, curusername, curuserid;
     TextView textview2;
-    EditText edittexttitle, edittextdesc;
+    TextInputEditText edittexttitle, edittextdesc;
     Button sendcouponbtn;
     private DatabaseReference mDatabase;
     List<Coupon> selectedfriendcoupons;
@@ -69,7 +71,8 @@ public class writenewcoupon extends AppCompatActivity {
                 }
             }
         });
-        curusername = (String) bundle.get("curusername");
+        curusername = bundle.getString("curusername");
+        curuserid = bundle.getString("curuserid");
         textview2 = findViewById(R.id.textView2);
         textview2.setText("Write a new coupon for " + selectedfriend);
 
@@ -77,6 +80,10 @@ public class writenewcoupon extends AppCompatActivity {
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });

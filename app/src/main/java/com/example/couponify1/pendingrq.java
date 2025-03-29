@@ -63,7 +63,6 @@ public class pendingrq extends AppCompatActivity {
                     User userr = itemSnapshot.getValue(User.class);
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curuserfriends = userr.getFriends();
-                        //Toast.makeText(getApplicationContext(), "Logged in as " + curusername, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -109,6 +108,8 @@ public class pendingrq extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
                 finish();
             }
@@ -117,6 +118,10 @@ public class pendingrq extends AppCompatActivity {
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });

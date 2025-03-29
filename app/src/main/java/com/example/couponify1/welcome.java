@@ -82,8 +82,8 @@ public class welcome extends AppCompatActivity {
                         if (Objects.equals(userr.getId(), curuserid)) {
                             curusername = userr.getUsername();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.putExtra("id", curuserid);
-                            intent.putExtra("username", curusername);
+                            intent.putExtra("curuserid", curuserid);
+                            intent.putExtra("curusername", curusername);
                             startActivity(intent);
                             finish();
                         }

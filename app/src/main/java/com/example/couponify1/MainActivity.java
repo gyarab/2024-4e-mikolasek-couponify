@@ -2,27 +2,21 @@ package com.example.couponify1;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,9 +33,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     Boolean notifpermgranted;
@@ -73,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            curuserid = bundle.getString("id");
-            curusername = bundle.getString("username");
+            curuserid = bundle.getString("curuserid");
+            curusername = bundle.getString("curusername");
         }
         //failsafe for null user
         auth = FirebaseAuth.getInstance();
@@ -96,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
 
@@ -134,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -145,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -154,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 auth.signOut();
                 Intent intent = new Intent(getApplicationContext(), welcome.class);
-                /*boolean logout = true;
-                intent.putExtra("logout", logout);*/
                 startActivity(intent);
                 finish();
             }
@@ -186,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 notifpermgranted = true;
                 getDeviceToken();
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                //TODO: show info about notif permission
-                System.out.println("notifs disabled :(");
+                Toast.makeText(MainActivity.this, "Notifications disabled, please enable them to get the full experience.",
+                        Toast.LENGTH_LONG).show();
             } else {
                 resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
@@ -201,25 +192,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (!task.isSuccessful()) {
-                    Log.e("logs", " Fetching token failed " + task.getException());
+                    System.out.println("Fetching token failed " + task.getException());
                     return;
                 }
                 curusertoken = task.getResult();
-                System.out.println("device token: " + curusertoken);
                 databaseReference.child("Tokens").child(curuserid).setValue(curusertoken);
             }
         });
     }
-
-    public void sendNotifFull(String title, String desc, String token){
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                SendNotification sn = new SendNotification();
-                sn.SendPushNotification(title, desc, token);
-            }
-        });
-    }
-
 }

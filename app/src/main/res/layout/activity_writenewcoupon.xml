@@ -35,30 +35,39 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:text="Write new coupon to NAME"
             />
 
-        <EditText
-            android:id="@+id/edittexttitle"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:inputType="text"
-            android:hint="@string/enter_the_title_of_the_coupon"
-            />
+            app:cursorColor="@color/couponifyblue"
+            app:hintTextColor="@color/couponifyblue"
+            app:boxStrokeColor="@color/couponifyblue"
+            android:layout_marginBottom="15dp"
+            app:boxStrokeWidth="2dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittexttitle"
+                android:hint="@string/enter_the_title_of_the_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/edittextdesc"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:inputType="text"
-            android:hint="@string/enter_the_description_of_the_coupon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittexttitle" />
+            app:cursorColor="@color/couponifyblue"
+            app:hintTextColor="@color/couponifyblue"
+            app:boxStrokeColor="@color/couponifyblue"
+            android:layout_marginBottom="15dp"
+            app:boxStrokeWidth="2dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittextdesc"
+                android:hint="@string/enter_the_description_of_the_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/sendcouponbtn"

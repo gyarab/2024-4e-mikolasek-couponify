@@ -54,13 +54,19 @@ public class frienddetail extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), writenewcoupon.class);
                 intent.putExtra("selectedfriend", selectedfriend);
                 intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
+                finish();
             }
         });
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });

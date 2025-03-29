@@ -62,7 +62,7 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/couponifyblue"
-            android:text="Redeem" />
+            android:text="@string/redeem" />
 
     </LinearLayout>
 
