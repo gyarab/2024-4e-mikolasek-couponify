@@ -22,9 +22,6 @@
             android:name=".ActiveCoupons"
             android:exported="false" />
         <activity
-            android:name=".AactiveCoupons"
-            android:exported="false" />
-        <activity
             android:name=".writenewcoupon"
             android:exported="false" />
         <activity

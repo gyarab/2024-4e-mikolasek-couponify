@@ -1,17 +1,21 @@
 <resources>
     <string name="app_name">Couponify</string>
     <string name="login">Login</string>
-    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="dont_have_an_account">Don\'t have an account? </string>
     <string name="register">Register</string>
-    <string name="welcome">Welcome</string>
-    <string name="already_have_an_account_log_in_here">Already have an account? Log in here.</string>
+    <string name="welcome">Welcome to Couponify!</string>
     <string name="enter">Enter</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="don_t_have_an_account_register_here">Don\'t have an account? Register here.</string>
     <string name="back">Back</string>
     <string name="username">Username</string>
     <string name="no_active_friend_requests">No active friend requests.</string>
     <string name="no_active_coupons">No active coupons.</string>
     <string name="no_available_coupons">No available coupons.</string>
+    <string name="log_in_here">Log in here.</string>
+    <string name="already_have_an_account">Already have an account? </string>
+    <string name="register_here">Register here.</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="enter_the_title_of_the_coupon">Enter the title of the coupon</string>
+    <string name="enter_the_description_of_the_coupon">Enter the description of the coupon</string>
 </resources>

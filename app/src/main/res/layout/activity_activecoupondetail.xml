@@ -2,33 +2,101 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activecoupon"
+    android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activecoupondetail"
-    android:gravity="center|top">
+    android:gravity="center|top"
+    android:weightSum="100">
 
-    <TextView
-        android:id="@+id/activecoupondetailtitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/activecoupondetaildate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_weight="1"
+        android:background="@color/black"
+        >
 
-    <TextView
-        android:id="@+id/activecoupondetaildesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        <ImageButton
+            android:id="@+id/backbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:backgroundTint="@color/black"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/redeembtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="redeem" />
+        android:layout_weight="98"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/activecoupondetailtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:text="TITLE OF COUPON" />
+        <TextView
+            android:id="@+id/activecoupondetaildate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="DATE OF COUPON" />
+
+        <TextView
+            android:id="@+id/activecoupondetaildesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="DESCRIPTIOOOOON" />
+
+        <Button
+            android:id="@+id/redeembtn"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/couponifyblue"
+            android:text="Dismiss" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:background="@color/black">
+
+        <ImageButton
+            android:id="@+id/addfriendsbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_person_add_alt_1_24" />
+
+        <ImageButton
+            android:id="@+id/friendslistbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/outline_local_activity_24_pressed" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/baseline_reviews_24" />
+    </LinearLayout>
 </LinearLayout>

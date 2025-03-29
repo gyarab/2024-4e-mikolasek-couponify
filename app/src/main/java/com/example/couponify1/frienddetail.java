@@ -30,7 +30,7 @@ public class frienddetail extends AppCompatActivity {
 
     TextView textview, nocouponsalert;
     RecyclerView couponlistrv;
-    ImageButton friendslistbtn;
+    ImageButton friendslistbtn, addfriendsbtn;
     FloatingActionButton writecouponbtn;
     List<Coupon> Couponlist;
     DatabaseReference databaseReference;
@@ -46,7 +46,7 @@ public class frienddetail extends AppCompatActivity {
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
         textview = findViewById(R.id.textView);
-        textview.setText(selectedfriend);
+        textview.setText("Coupons received from "+selectedfriend);
         writecouponbtn = findViewById(R.id.writecouponbtn);
         writecouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +61,18 @@ public class frienddetail extends AppCompatActivity {
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
+            }
+        });
+
+        addfriendsbtn = findViewById(R.id.addfriendsbtn);
+        addfriendsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });

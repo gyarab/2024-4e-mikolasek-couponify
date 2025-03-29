@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -35,9 +36,10 @@ public class writenewcoupon extends AppCompatActivity {
     String selectedfriend, selectedfriendid, curusername;
     TextView textview2;
     EditText edittexttitle, edittextdesc;
-    Button button;
+    Button sendcouponbtn;
     private DatabaseReference mDatabase;
     List<Coupon> selectedfriendcoupons;
+    ImageButton backbtn, friendslistbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +73,25 @@ public class writenewcoupon extends AppCompatActivity {
         textview2 = findViewById(R.id.textView2);
         textview2.setText("Write a new coupon for " + selectedfriend);
 
-        button = findViewById(R.id.sendcouponbtn);
+        friendslistbtn = findViewById(R.id.friendslistbtn);
+        friendslistbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        sendcouponbtn = findViewById(R.id.sendcouponbtn);
         edittexttitle = findViewById(R.id.edittexttitle);
         edittextdesc = findViewById(R.id.edittextdesc);
-        button.setOnClickListener(new View.OnClickListener() {
+        sendcouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String coupontitle = String.valueOf(edittexttitle.getText());

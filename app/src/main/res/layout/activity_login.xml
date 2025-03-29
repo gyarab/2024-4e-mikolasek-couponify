@@ -20,7 +20,11 @@
     
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        app:cursorColor="@color/couponifyblue"
+        app:hintTextColor="@color/couponifyblue"
+        app:boxStrokeColor="@color/couponifyblue"
+        app:boxStrokeWidth="2dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:hint="@string/email"
@@ -31,33 +35,60 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
+        app:cursorColor="@color/couponifyblue"
+        app:boxStrokeColor="@color/couponifyblue"
+        app:hintTextColor="@color/couponifyblue"
+        app:boxStrokeWidth="2dp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/couponifyblue">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:outlineSpotShadowColor="@color/couponifyblue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressbar"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:indicatorColor="@color/couponifyblue"
+        app:trackThickness="4dp"
+        app:indicatorSize="40dp"
+        app:indicatorDirectionCircular="clockwise"
+        android:indeterminate="true"/>
 
     <Button
         android:id="@+id/login_btn"
         android:text="@string/enter"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/couponifyblue">
     </Button>
 
-    <TextView
-        android:id="@+id/registertext"
-        android:text="@string/don_t_have_an_account_register_here"
-        android:gravity="center"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="@string/don_t_have_an_account"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"/>
+        <TextView
+            android:id="@+id/registertext"
+            android:text="@string/register_here"
+            android:gravity="center"
+            android:textColor="@color/couponifyblue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

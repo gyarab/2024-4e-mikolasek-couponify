@@ -3,7 +3,9 @@ package com.example.couponify1;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -29,11 +31,13 @@ public class coupondetail extends AppCompatActivity {
     String coupontitle, coupondate, coupondesc, writtenby, curusername;
     TextView title, date, desc;
     Button redeembtn;
+    ImageButton backbtn, friendslistbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupondetail);
+        hideNavigationBars();
         Bundle bundle = getIntent().getExtras();
         coupontitle = bundle.getString("coupontitle");
         coupondate = bundle.getString("coupondate");
@@ -45,9 +49,23 @@ public class coupondetail extends AppCompatActivity {
         title = findViewById(R.id.coupondetailtitle);
         title.setText(coupontitle);
         date = findViewById(R.id.coupondetaildate);
-        date.setText(coupondate);
+        date.setText("received on: " + coupondate);
         desc = findViewById(R.id.coupondetaildesc);
         desc.setText(coupondesc);
+        friendslistbtn = findViewById(R.id.friendslistbtn);
+        friendslistbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         redeembtn = findViewById(R.id.redeembtn);
         redeembtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,4 +121,21 @@ public class coupondetail extends AppCompatActivity {
             }
         });
     }
+    private void hideNavigationBars() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+        );
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideNavigationBars();
+    }
+
 }

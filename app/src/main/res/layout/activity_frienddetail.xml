@@ -9,15 +9,47 @@
     android:weightSum="100"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="25sp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="bottom"
+            android:layout_height="50dp"
+            android:background="@color/black">
+
+            <ImageButton
+                android:id="@+id/receivedcouponsbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/outline_move_to_inbox_24_pressed" />
+
+            <ImageButton
+                android:id="@+id/gamesessionbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/baseline_videogame_asset_24" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="25sp"
+            />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +83,8 @@
         android:layout_margin="20dp"
         android:layout_gravity="end|bottom"
         android:id="@+id/writecouponbtn"
-        android:src="@drawable/baseline_add_24" />
+        android:src="@drawable/baseline_add_24"
+        android:backgroundTint="@color/couponifyblue"/>
 
     <LinearLayout
         android:layout_width="match_parent"
