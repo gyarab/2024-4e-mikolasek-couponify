@@ -104,6 +104,7 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
                 intent.putExtra("coupondesc", coupon.getDesc());
                 intent.putExtra("writtenby", coupon.getWrittenby());
                 intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 intent.putExtra("writtentome", writtentome);
                 context.startActivity(intent);
             }

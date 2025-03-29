@@ -14,7 +14,6 @@ public class User {
 
     private String id, username;
     private ArrayList<String> friends;
-    private ArrayList<Coupon> coupons;
 
     public User() {
     }
@@ -23,7 +22,6 @@ public class User {
         this.id = id;
         this.username = username;
         this.friends = friends;
-        this.coupons = new ArrayList<>();
     }
 
     @Override
@@ -72,14 +70,6 @@ public class User {
 
     public void setFriends(ArrayList<String> friends) {
         this.friends = friends;
-    }
-
-    public ArrayList<Coupon> getCoupons() {
-        return coupons;
-    }
-
-    public void setCoupons(ArrayList<Coupon> coupons) {
-        this.coupons = coupons;
     }
 
     public void addfriend(String friendusername) {

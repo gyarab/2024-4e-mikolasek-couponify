@@ -3,24 +3,31 @@ package com.example.couponify1;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 public class activecoupondetail extends AppCompatActivity {
     DatabaseReference mDatabase;
-    String coupontitle, coupondate, coupondesc, writtenby, curusername;
+    String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid;
     TextView title, date, desc;
-    boolean writtentome;
     ImageButton backbtn, friendslistbtn;
+    Button dismissbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +40,7 @@ public class activecoupondetail extends AppCompatActivity {
         coupondesc = bundle.getString("coupondesc");
         writtenby = bundle.getString("writtenby");
         curusername = bundle.getString("curusername");
-        writtentome = bundle.getBoolean("writtentome");
+        curuserid = bundle.getString("curuserid");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
 
         title = findViewById(R.id.activecoupondetailtitle);
@@ -57,6 +64,50 @@ public class activecoupondetail extends AppCompatActivity {
                 finish();
             }
         });
+        dismissbtn = findViewById(R.id.dismissbtn);
+        dismissbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("users").child(curuserid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                            Coupon cpn = itemsnapshot.getValue(Coupon.class);
+                            if (Objects.equals(cpn.getTitle(), coupontitle) && Objects.equals(cpn.getDesc(), coupondesc)) {
+                                mDatabase.child("users").child(curuserid).child("activecoupons").child(itemsnapshot.getKey()).removeValue();
+                            }
+                        }
+                    }
+                });
+                mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                            User userr = itemsnapshot.getValue(User.class);
+                            if (Objects.equals(userr.getUsername(), writtenby)) {
+                                String writtenbyid = userr.getId();
+                                mDatabase.child("users").child(writtenbyid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                                            Coupon cpn = itemsnapshot.getValue(Coupon.class);
+                                            if (Objects.equals(cpn.getTitle(), coupontitle) && Objects.equals(cpn.getDesc(), coupondesc)) {
+                                                System.out.println("key " + itemsnapshot.getKey());
+                                                mDatabase.child("users").child(writtenbyid).child("activecoupons").child(itemsnapshot.getKey()).removeValue();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        if (Objects.equals(curusername, writtenby)) {
+            dismissbtn.setVisibility(View.GONE);
+        }
     }
 
     private void hideNavigationBars() {

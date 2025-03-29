@@ -34,6 +34,7 @@ public class register extends AppCompatActivity {
     private DatabaseReference mDatabase;
     ProgressBar progressBar;
     TextView textview;
+    Boolean isunique;
 /*
     @Override
     public void onStart() {
@@ -75,6 +76,13 @@ public class register extends AppCompatActivity {
                 String password = String.valueOf(editTextPassword.getText());
                 String username = String.valueOf(editTextUsername.getText());
 
+                /*checkUniqueUsername(username);
+
+                if (!isunique) {
+                    Toast.makeText(register.this, username + " is taken. Please choose a unique username.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }*/
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(register.this, "Enter your email.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
@@ -119,20 +127,6 @@ public class register extends AppCompatActivity {
         ArrayList<String> friends = new ArrayList<>();
         User user = new User(curuserid, username, friends);
         mDatabase.child("users").child(curuserid).setValue(user);
-
-        /*mDatabase.child("users").child(username).child("friends").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(register.this, "failed",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(register.this, "has friendslist",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
     }
     private void hideNavigationBars() {
         getWindow().getDecorView().setSystemUiVisibility(
@@ -144,6 +138,21 @@ public class register extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
         );
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    private void checkUniqueUsername(String username) {
+        isunique = true;
+        mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                    User userr = itemsnapshot.getValue(User.class);
+                    if (Objects.equals(userr.getUsername(), username)) {
+                        isunique = false;
+                        return;
+                    }
+                }
+            }
+        });
     }
     @Override
     protected void onResume() {

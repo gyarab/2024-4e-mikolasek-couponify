@@ -108,7 +108,7 @@ public class writenewcoupon extends AppCompatActivity {
                     selectedfriendcoupons.add(coupon);
                     mDatabase.child("users").child(selectedfriendid).child("coupons").setValue(selectedfriendcoupons);
                 }
-                sendNotifFull("New coupon received!", "you have received a new coupon from " + curusername, selectedfriendid);
+                sendNotifWithID("New coupon received!", "you have received a new coupon from " + curusername, selectedfriendid);
             }
         });
     }
@@ -130,7 +130,7 @@ public class writenewcoupon extends AppCompatActivity {
         super.onResume();
         hideNavigationBars();
     }
-    public void sendNotifFull(String title, String desc, String friendid){
+    public void sendNotifWithID(String title, String desc, String friendid){
         mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

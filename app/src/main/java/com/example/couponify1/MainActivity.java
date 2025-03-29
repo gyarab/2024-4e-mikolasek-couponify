@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     DatabaseReference databaseReference;
-    ImageButton addfriendsbtn, logoutbtn, activecouponsbtn;
+    ImageButton addfriendsbtn, logoutbtn, activecouponsbtn, inspirationtabbtn;
     String curuserid, curusername, curusertoken;
     TextView hellotext;
     RecyclerView friendslistrv;
@@ -131,6 +131,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ActiveCoupons.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+            }
+        });
+
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

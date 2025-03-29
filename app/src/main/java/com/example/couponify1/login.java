@@ -38,17 +38,6 @@ public class login extends AppCompatActivity {
     DatabaseReference databaseReference;
     String curuserid, curusername;
     ValueEventListener valueEventListener;
-/*
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

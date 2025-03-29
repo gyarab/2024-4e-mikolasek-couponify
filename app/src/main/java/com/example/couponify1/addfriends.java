@@ -42,7 +42,7 @@ public class addfriends extends AppCompatActivity {
     List<User> userlist;
     DatabaseReference databaseReference;
     FirebaseAuth mAuth;
-    String curuserid, curusername;
+    String curuserid, curusername, querry;
     List<String> curuserfriends;
     ImageButton pendingrqbtn, friendslistbtn;
 
@@ -93,61 +93,64 @@ public class addfriends extends AppCompatActivity {
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {/*
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("curusername", curusername);
-                intent.putExtra("curuserid", curuserid);
-                startActivity(intent);*/
+            public void onClick(View view) {
                 finish();
             }
         });
-
-
 
         addfriendsrv = findViewById(R.id.addfriendsrv);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(addfriends.this, 1);
         addfriendsrv.setLayoutManager(gridLayoutManager);
 
-
         userlist = new ArrayList<>();
 
         userlistadapter adapter = new userlistadapter(addfriends.this, userlist);
         addfriendsrv.setAdapter(adapter);
 
-        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+        querry = "";
+        addfriendssearch = findViewById(R.id.addfriendssearch);
+        addfriendssearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userlist.clear();
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
-                    User user = itemSnapshot.getValue(User.class);
-                    if (!user.getUsername().equals(curusername)) {
-                        if (user.getFriends() == null || !(user.getFriends().contains(curusername))) {
-                            hasrq(curusername, user.getUsername(), new HasRqCallback() {
-                                @Override
-                                public void onResult(boolean hasRequest) {
-                                    if (!hasRequest){
-                                        userlist.add(user);
-                                        //System.out.println(userlist);
-                                        adapter.notifyDataSetChanged();
-                                    }
-                                }
-                            });
-
-
-
-                            //System.out.println(hasrq(curusername, user.getUsername()));
-                        }
-
-                    }
-                }
-                //System.out.println("fianl "+userlist);
-                adapter.notifyDataSetChanged();
+            public boolean onQueryTextSubmit(String query) {
+                return true;
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error);
+            public boolean onQueryTextChange(String newText) {
+                userlist.clear();
+                querry = newText;
+                if (newText.isEmpty()) {
+                    return true;
+                }
+                databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
+                            User user = itemSnapshot.getValue(User.class);
+                            if (!user.getUsername().equals(curusername)) {
+                                if (user.getFriends() == null || !(user.getFriends().contains(curusername)) && user.getUsername().contains(querry)) {
+                                    hasrq(curusername, user.getUsername(), new HasRqCallback() {
+                                        @Override
+                                        public void onResult(boolean hasRequest) {
+                                            if (!hasRequest && !curuserfriends.contains(user.getUsername())){
+                                                userlist.add(user);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        System.out.println(error);
+                    }
+                });
+                return true;
             }
         });
     }
@@ -158,13 +161,10 @@ public class addfriends extends AppCompatActivity {
 
     //gemini
     public void hasrq(String curusername, String friend, HasRqCallback callback) {
-        //System.out.println("CHECKING IF " + curusername + " sent rq to " + friend);
-
         databaseReference.child("rq").child(friend).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //System.out.println("ondatachange probiha pro " + friend);
-                ArrayList<String> temp = null;
+                ArrayList<String> temp;
                 GenericTypeIndicator<ArrayList<String>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<String>>() {};
                 temp = snapshot.getValue(genericTypeIndicator);
                 boolean hasRequest = false;

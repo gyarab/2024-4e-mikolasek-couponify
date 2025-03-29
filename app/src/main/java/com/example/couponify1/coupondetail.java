@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 
 public class coupondetail extends AppCompatActivity {
     DatabaseReference mDatabase;
-    String coupontitle, coupondate, coupondesc, writtenby, curusername;
+    String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid;
     TextView title, date, desc;
     Button redeembtn;
     ImageButton backbtn, friendslistbtn;
@@ -44,6 +44,7 @@ public class coupondetail extends AppCompatActivity {
         coupondesc = bundle.getString("coupondesc");
         writtenby = bundle.getString("writtenby");
         curusername = bundle.getString("curusername");
+        curuserid = bundle.getString("curuserid");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
 
         title = findViewById(R.id.coupondetailtitle);
@@ -68,17 +69,30 @@ public class coupondetail extends AppCompatActivity {
         });
         redeembtn = findViewById(R.id.redeembtn);
         redeembtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                Coupon coupon = new Coupon(coupontitle, coupondesc, writtenby, curusername);
+                coupon.setCreatedon(coupondate);
+                mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
+                mDatabase.child("users").child(curuserid).child("coupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                            Coupon cpn = itemsnapshot.getValue(Coupon.class);
+                            if (Objects.equals(cpn.getTitle(), coupon.getTitle()) && Objects.equals(cpn.getDesc(), coupon.getDesc())) {
+                                System.out.println("key "+itemsnapshot.getKey());
+                                mDatabase.child("users").child(curuserid).child("coupons").child(itemsnapshot.getKey()).removeValue();
+                            }
+                        }
+                    }
+                });
                 mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                             User userr = itemsnapshot.getValue(User.class);
-                            if (userr.getUsername().equals(writtenby) || userr.getUsername().equals(curusername)) {
-                                Coupon coupon = new Coupon(coupontitle, coupondesc, writtenby, curusername);
-                                coupon.setCreatedon(coupondate);
+                            if (userr.getUsername().equals(writtenby)) {
                                 mDatabase.child("users").child(userr.getId()).child("activecoupons").push().setValue(coupon).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

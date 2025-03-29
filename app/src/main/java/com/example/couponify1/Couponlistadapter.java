@@ -82,6 +82,7 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
                 intent.putExtra("coupondesc", coupon.getDesc());
                 intent.putExtra("writtenby", coupon.getWrittenby());
                 intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
                 context.startActivity(intent);
             }
         });
