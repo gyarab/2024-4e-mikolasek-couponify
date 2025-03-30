@@ -26,4 +26,5 @@
     <string name="sum_of_coupons_must_be_odd">Sum of coupons must be odd.</string>
     <string name="game_session_inactive">Game session inactive.</string>
     <string name="game_session_active">Game session active.</string>
+    <string name="inspiration_tab">Inspiration tab</string>
 </resources>

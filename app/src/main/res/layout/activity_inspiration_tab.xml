@@ -41,10 +41,32 @@
         android:orientation="vertical"
         android:layout_weight="98">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="25sp"
+            android:text="@string/inspiration_tab"
+            />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressbar"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:indicatorColor="@color/couponifyblue"
+            app:trackThickness="4dp"
+            app:indicatorSize="40dp"
+            app:indicatorDirectionCircular="clockwise"
+            android:indeterminate="true"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/friendslistrv"
+            android:id="@+id/insporv"
             android:layout_margin="12dp"
             >
         </androidx.recyclerview.widget.RecyclerView>

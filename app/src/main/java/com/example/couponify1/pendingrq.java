@@ -82,7 +82,6 @@ public class pendingrq extends AppCompatActivity {
         rqlistadapter adapter = new rqlistadapter(pendingrq.this, rqlist);
         pendigrqrv.setAdapter(adapter);
 
-        //System.out.println(curusername);
         databaseReference.child("rq").child(curusername).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
