@@ -56,7 +56,6 @@ public class User {
                 for (DataSnapshot itemsnapshot: snapshot.getChildren()) {
                     String friend = itemsnapshot.getValue(String.class);
                     friendlist.add(friend);
-                    System.out.println("getfriends vysledek " + friendlist);
                 }
             }
 

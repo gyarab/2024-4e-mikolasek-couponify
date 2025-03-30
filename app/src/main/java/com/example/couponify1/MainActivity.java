@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     TextView hellotext;
     RecyclerView friendslistrv;
 
+    //ask permission to send notifications
     private ActivityResultLauncher <String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
         if (isGranted){
             notifpermgranted = true;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         friendslistadapter adapter = new friendslistadapter(MainActivity.this, friendslist);
         friendslistrv.setAdapter(adapter);
 
+        //gets friends from database
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         databaseReference.child("users").child(curuserid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        //terminates auth session
         logoutbtn = findViewById(R.id.logoutbtn);
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override

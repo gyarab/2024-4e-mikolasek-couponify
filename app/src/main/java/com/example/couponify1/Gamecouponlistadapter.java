@@ -44,7 +44,7 @@ public class Gamecouponlistadapter extends RecyclerView.Adapter<Gamecouponlistho
         mAuth = FirebaseAuth.getInstance();
         curfirebaseuser = mAuth.getCurrentUser();
         curuserid = curfirebaseuser.getUid();
-
+        //get user
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -74,6 +74,7 @@ public class Gamecouponlistadapter extends RecyclerView.Adapter<Gamecouponlistho
         holder.gamecoupons_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //pass info to detail
                 Intent intent = new Intent(context, GameCouponDetail.class);
                 intent.putExtra("coupontitle", coupon.getTitle());
                 intent.putExtra("coupondate", coupon.getCreatedon());

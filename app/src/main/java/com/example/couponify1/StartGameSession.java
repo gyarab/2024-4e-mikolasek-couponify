@@ -41,7 +41,7 @@ public class StartGameSession extends AppCompatActivity {
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
         selectedfriend = bundle.getString("selectedfriend");
-
+        //initialize everything
         startgametitle = findViewById(R.id.startgametitle);
         startgametitle.setText("Start game session with " + selectedfriend);
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
@@ -52,12 +52,14 @@ public class StartGameSession extends AppCompatActivity {
         oddwarning = findViewById(R.id.oddwarning);
         zerowarning = findViewById(R.id.zerowarning);
         startgamebtn = findViewById(R.id.startgamebtn);
+        //this list is for both game coupons that current user wrote and those that selected friend wrote, they are shared
         list = new ArrayList<>();
         mDatabase.child("users").child(curuserid).child("gamecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                     GameCoupon coupon = itemsnapshot.getValue(GameCoupon.class);
+                    //count how many are from current user and how many from friend
                     if (Objects.equals(coupon.getWrittento(), curusername) && Objects.equals(coupon.getWrittenby(), selectedfriend)) {
                         couponsfromfriend++;
                         list.add(coupon);
@@ -69,7 +71,7 @@ public class StartGameSession extends AppCompatActivity {
                 }
                 numcoupons1.setText("Coupons written by you: " + couponsfromcuruser);
                 numcoupons2.setText("Coupons written by " + selectedfriend + ": " + couponsfromfriend);
-
+                //show text if there are no game coupons or the number of them is odd, game session cannot be started then
                 if (list.isEmpty()) {
                     zerowarning.setVisibility(View.VISIBLE);
                     startgamebtn.setVisibility(View.GONE);
@@ -80,9 +82,11 @@ public class StartGameSession extends AppCompatActivity {
                     startgamebtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //shuffle the list randomly
                             Collections.shuffle(list, new Random());
                             randlist1 = new ArrayList<>();
                             randlist2 = new ArrayList<>();
+                            //give first half to current user, second to friend
                             randlist1.addAll(list.subList(0,list.size()/2));
                             randlist2.addAll(list.subList(list.size()/2, list.size()));
                             mDatabase.child("users").child(curuserid).child("gamecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -93,12 +97,13 @@ public class StartGameSession extends AppCompatActivity {
                                         for (int i = 0; i < randlist1.size(); i++) {
                                             GameCoupon c = randlist1.get(i);
                                             if (coupon != null && Objects.equals(c.title, coupon.title) && Objects.equals(c.desc, coupon.desc) && Objects.equals(c.writtenby, coupon.writtenby)) {
+                                                //activate the game coupons that are supposed to stay
                                                 itemsnapshot.getRef().removeValue();
                                                 coupon.activate();
-                                                System.out.println("is active? " + coupon.isactive);
                                                 itemsnapshot.getRef().setValue(coupon);
                                             }
                                         }
+                                        //remove the coupons that belong to friend
                                         for (int i = 0; i < randlist2.size(); i++) {
                                             GameCoupon c = randlist2.get(i);
                                             if (coupon != null && Objects.equals(c.title, coupon.title) && Objects.equals(c.desc, coupon.desc) && Objects.equals(c.writtenby, coupon.writtenby)) {
@@ -108,6 +113,7 @@ public class StartGameSession extends AppCompatActivity {
                                     }
                                 }
                             });
+                            //get friend id
                             mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -118,6 +124,7 @@ public class StartGameSession extends AppCompatActivity {
                                             break;
                                         }
                                     }
+                                    //now do the same for firend
                                     mDatabase.child("users").child(selectedfriendid).child("gamecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -147,7 +154,7 @@ public class StartGameSession extends AppCompatActivity {
                 }
             }
         });
-
+        //uninteresting navigation buttons
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override

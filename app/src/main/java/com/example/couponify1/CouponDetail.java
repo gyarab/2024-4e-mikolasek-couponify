@@ -35,6 +35,7 @@ public class CouponDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupondetail);
         hideNavigationBars();
+        //get info from previous activity
         Bundle bundle = getIntent().getExtras();
         coupontitle = bundle.getString("coupontitle");
         coupondate = bundle.getString("coupondate");
@@ -43,13 +44,14 @@ public class CouponDetail extends AppCompatActivity {
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-
+        //set correct info into textfields
         title = findViewById(R.id.coupondetailtitle);
         title.setText(coupontitle);
         date = findViewById(R.id.coupondetaildate);
         date.setText("received on: " + coupondate);
         desc = findViewById(R.id.coupondetaildesc);
         desc.setText(coupondesc);
+        //initialize navigation buttons
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +97,7 @@ public class CouponDetail extends AppCompatActivity {
                 finish();
             }
         });
+        //redeem button moves coupon to active coupons for both me and the one who wrote the coupon
         redeembtn = findViewById(R.id.redeembtn);
         redeembtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -102,7 +105,9 @@ public class CouponDetail extends AppCompatActivity {
             public void onClick(View v) {
                 Coupon coupon = new Coupon(coupontitle, coupondesc, writtenby, curusername);
                 coupon.setCreatedon(coupondate);
+                //add coupon to my actives
                 mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
+                //search for this coupon in my coupons tab and remove it
                 mDatabase.child("users").child(curuserid).child("coupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -114,6 +119,7 @@ public class CouponDetail extends AppCompatActivity {
                         }
                     }
                 });
+                // find friend id by his username (idk why i pass the username and not the id this is so dumb)
                 mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -130,7 +136,7 @@ public class CouponDetail extends AppCompatActivity {
             }
         });
     }
-
+    //find recipients token using his id, pass token to sendnotification class, it does the rest
     public void sendNotifWithID(String title, String desc, String friendid){
         mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

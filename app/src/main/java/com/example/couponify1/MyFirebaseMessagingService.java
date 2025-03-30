@@ -15,6 +15,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    //this code is genrated by ai because i couldn't figure out how to work with the new http v1 by firebase, the documentation is so bad
     private static final String CHANNEL_ID = "FCM_CHANNEL";
 
     @Override

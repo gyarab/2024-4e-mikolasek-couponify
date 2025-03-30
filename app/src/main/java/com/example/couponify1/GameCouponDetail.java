@@ -36,6 +36,7 @@ public class GameCouponDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamecoupondetail);
         hideNavigationBars();
+        //get info
         Bundle bundle = getIntent().getExtras();
         gamecoupontitle = bundle.getString("coupontitle");
         gamecoupondesc = bundle.getString("coupondesc");
@@ -44,12 +45,13 @@ public class GameCouponDetail extends AppCompatActivity {
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
         isactive = bundle.getBoolean("isactive");
+
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         title = findViewById(R.id.coupondetailtitle);
         title.setText(gamecoupontitle);
         desc = findViewById(R.id.coupondetaildesc);
         desc.setText(gamecoupondesc);
-
+        //only show redeem button if the game session is active
         redeembtn = findViewById(R.id.redeembtn);
         if (!isactive) {
             redeembtn.setVisibility(View.GONE);
@@ -58,11 +60,13 @@ public class GameCouponDetail extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                //if the coupon was written by me, just reverse it so it checks out in active coupons
                 if (Objects.equals(writtenby, curusername)) {
                     friendname = writtento;
                 } else {
                     friendname = writtenby;
                 }
+                //move to active coupons
                 GameCoupon coupon = new GameCoupon(gamecoupontitle, gamecoupondesc, curusername, friendname);
                 mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
                 mDatabase.child("users").child(curuserid).child("gamecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -91,7 +95,7 @@ public class GameCouponDetail extends AppCompatActivity {
                 });
             }
         });
-
+        //navigation buttons
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +146,7 @@ public class GameCouponDetail extends AppCompatActivity {
             }
         });
     }
+    //get token by id, pass to sendnotification
     public void sendNotifWithID(String title, String desc, String friendid){
         mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

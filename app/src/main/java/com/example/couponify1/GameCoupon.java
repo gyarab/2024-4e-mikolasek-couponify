@@ -14,7 +14,7 @@ public class GameCoupon extends Coupon{
     }
     public GameCoupon() {
     }
-
+    //game coupon is activated when game session starts
     public void activate() {
         isactive = true;
     }

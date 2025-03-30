@@ -37,12 +37,14 @@ public class FriendDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frienddetail);
         hideNavigationBars();
+        //get info from previous activity
         Bundle bundle = getIntent().getExtras();
         selectedfriend = bundle.getString("selectedfriend");
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
         textview = findViewById(R.id.textView);
         textview.setText("Coupons received from "+selectedfriend);
+        //initialize navigation buttons
         writecouponbtn = findViewById(R.id.writecouponbtn);
         writecouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +104,7 @@ public class FriendDetail extends AppCompatActivity {
         });
 
         nocouponsalert = findViewById(R.id.nocouponsalert);
+        //initialize recyclerview with empty list
         couponlistrv = findViewById(R.id.couponlistrv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(FriendDetail.this, 1);
         couponlistrv.setLayoutManager(gridLayoutManager);
@@ -110,7 +113,7 @@ public class FriendDetail extends AppCompatActivity {
 
         Couponlistadapter adapter = new Couponlistadapter(FriendDetail.this, Couponlist);
         couponlistrv.setAdapter(adapter);
-
+        //fill list with coupons that were written by the selected user
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         databaseReference.child("users").child(curuserid).child("coupons").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,6 +125,7 @@ public class FriendDetail extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                //show text if there are no coupons from this user
                 if (Couponlist.isEmpty()) {
                     nocouponsalert.setVisibility(View.VISIBLE);
                 } else {nocouponsalert.setVisibility(View.GONE);}

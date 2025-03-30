@@ -45,7 +45,7 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
         mAuth = FirebaseAuth.getInstance();
         curfirebaseuser = mAuth.getCurrentUser();
         curuserid = curfirebaseuser.getUid();
-
+        //get current user
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -75,6 +75,7 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
         holder.coupons_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //pass info to detail class
                 Intent intent = new Intent(context, CouponDetail.class);
                 intent.putExtra("coupontitle", coupon.getTitle());
                 intent.putExtra("coupondate", coupon.getCreatedon());

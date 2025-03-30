@@ -35,18 +35,19 @@ public class ActiveCoupons extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_coupons);
         hideNavigationBars();
+        //get info from previous activity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            System.out.println("bundle is not null");
             curuserid = bundle.getString("curuserid");
             curusername = bundle.getString("curusername");
         }
+        //initialize firebase auth so i can log out
         auth = FirebaseAuth.getInstance();
+        //set greeting text
         hellotext = findViewById(R.id.hellotext);
         String Hello = "Hello, " + curusername;
-        System.out.println(Hello);
         hellotext.setText(Hello);
-
+        //initialize navigation buttons
         friendsbtn = findViewById(R.id.friendsbtn);
         friendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +92,7 @@ public class ActiveCoupons extends AppCompatActivity {
                 finish();
             }
         });
-
+        //logout button terminates auth session and brings user to welcome page
         logoutbtn = findViewById(R.id.logoutbtn);
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,16 +103,16 @@ public class ActiveCoupons extends AppCompatActivity {
                 finish();
             }
         });
-
+        //initialize recyclerview
         activecouponsrv = findViewById(R.id.activecouponsrv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(ActiveCoupons.this, 1);
         activecouponsrv.setLayoutManager(gridLayoutManager);
-
+        //start with empty list
         List<Coupon> activecouponList = new ArrayList<>();
         activecouponsadapter adapter = new activecouponsadapter(ActiveCoupons.this, activecouponList);
         activecouponsrv.setAdapter(adapter);
         nocouponsalert = findViewById(R.id.nocouponsalert);
-
+        //get users active coupons from database
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         databaseReference.child("users").child(curuserid).child("activecoupons").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,7 +123,9 @@ public class ActiveCoupons extends AppCompatActivity {
                         activecouponList.add(coupon);
                     }
                 }
+                //update adapter
                 adapter.notifyDataSetChanged();
+                //show text if there are no active coupons
                 if (activecouponList.isEmpty()) {
                     nocouponsalert.setVisibility(View.VISIBLE);
                 } else {nocouponsalert.setVisibility(View.GONE);}

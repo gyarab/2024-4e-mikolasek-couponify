@@ -42,6 +42,7 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
     @NonNull
     @Override
     public ActiveCouponsholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //get current user
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         mAuth = FirebaseAuth.getInstance();
         curfirebaseuser = mAuth.getCurrentUser();
@@ -51,15 +52,17 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
         return new ActiveCouponsholder(view);
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ActiveCouponsholder holder, int position) {
+        //get coupon from list
         Coupon coupon = activecouponList.get(position);
         System.out.println("type: " + coupon.getType());
+        //if the coupon is a game coupon make it red to tell them apart
         if (Objects.equals(coupon.getType(), "GameCoupon")) {
             holder.activecoupons_item.setCardBackgroundColor(Color.parseColor("#FA9292"));
         }
         holder.coupontitle.setText(coupon.getTitle());
+        //get username of current user
         mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -68,6 +71,7 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curusername = userr.getUsername();
                         curuser = userr;
+                        //if i wrote this coupon, show who its for, otherwise show who its from
                         if (Objects.equals(coupon.getWrittento(), curusername)) {
                             holder.couponfrom_to.setText("From: " + coupon.getWrittenby());
                         } else {

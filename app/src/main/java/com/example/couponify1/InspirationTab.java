@@ -36,7 +36,7 @@ public class InspirationTab extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
-
+        //navigation buttons
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +72,7 @@ public class InspirationTab extends AppCompatActivity {
         });
 
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-
+        //initialize recyclerview
         insporv = findViewById(R.id.insporv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(InspirationTab.this, 1);
         insporv.setLayoutManager(gridLayoutManager);
@@ -80,7 +80,7 @@ public class InspirationTab extends AppCompatActivity {
         inspocouponlist = new ArrayList<>();
         favlist = new ArrayList<>();
 
-
+        //get current users favorited inspo coupons
         databaseReference.child("users").child(curuserid).child("favoritedinspo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -88,6 +88,7 @@ public class InspirationTab extends AppCompatActivity {
                     InspoCoupon c = itemsnapshot.getValue(InspoCoupon.class);
                     favlist.add(c);
                 }
+                //now filter out those coupons so that they don't show up in the feed
                 databaseReference.child("Inspo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -103,8 +104,10 @@ public class InspirationTab extends AppCompatActivity {
                                 inspocouponlist.add(c);
                             }
                         }
+                        //put favorite genre of coupons on top
                         List<InspoCoupon> temp = sortbyliked(inspocouponlist, favlist);
                         inspocouponlist = temp;
+                        //start rv with the correct list
                         inspoadapter adapter = new inspoadapter(InspirationTab.this, inspocouponlist);
                         insporv.setAdapter(adapter);
                     }
@@ -112,7 +115,7 @@ public class InspirationTab extends AppCompatActivity {
             }
         });
     }
-
+    //this method takes the list of unfavorited inspo coupons and puts coupons of users favorite genre to the top
     private List<InspoCoupon> sortbyliked(List<InspoCoupon> inspocouponlist, List<InspoCoupon> favlist) {
         int numofcouple = 0;
         int numoffamily = 0;
@@ -132,6 +135,7 @@ public class InspirationTab extends AppCompatActivity {
                 numofwork++;
             }
         }
+        //figure out what genre is users favorite
         String mostliked = "couple";
         if (numoffriends > numofcouple) {
             mostliked = "friends";
@@ -142,6 +146,7 @@ public class InspirationTab extends AppCompatActivity {
         if (numofwork > numoffamily) {
             mostliked = "work";
         }
+        //first fill list with coupons of most liked genre, then the rest
         List<InspoCoupon> temp = new ArrayList<>();
         for (InspoCoupon coupon : inspocouponlist) {
             if (Objects.equals(coupon.getGenre(), mostliked)) {

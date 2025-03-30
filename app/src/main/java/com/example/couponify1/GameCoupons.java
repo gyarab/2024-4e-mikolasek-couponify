@@ -38,6 +38,7 @@ public class GameCoupons extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamecoupons);
         hideNavigationBars();
+        //get info from previous activity
         Bundle bundle = getIntent().getExtras();
         selectedfriend = bundle.getString("selectedfriend");
         curusername = bundle.getString("curusername");
@@ -45,6 +46,7 @@ public class GameCoupons extends AppCompatActivity {
 
         textView = findViewById(R.id.textView);
         textView.setText("Game coupons shared with " + selectedfriend);
+        //navigation buttons
         inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
         inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,15 +120,15 @@ public class GameCoupons extends AppCompatActivity {
         controls = findViewById(R.id.controls);
         active_inactive = findViewById(R.id.active_inactive);
         nocouponsalert = findViewById(R.id.nocouponsalert);
+        //initialize recyclerview
         gamecouponlistrv = findViewById(R.id.gamecouponlistrv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(GameCoupons.this, 1);
         gamecouponlistrv.setLayoutManager(gridLayoutManager);
-
+        //with empty list
         Gamecouponlist = new ArrayList<>();
-
         Gamecouponlistadapter adapter = new Gamecouponlistadapter(GameCoupons.this, Gamecouponlist);
         gamecouponlistrv.setAdapter(adapter);
-
+        //now get all game coupons that i wrote to friend or friend wrote to me, ez
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         databaseReference.child("users").child(curuserid).child("gamecoupons").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -140,6 +142,7 @@ public class GameCoupons extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                //if current user has no coupons left, we still need to check if friend has any left, otherwise current user could make new ones
                 if (Gamecouponlist.isEmpty()) {
                     databaseReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override

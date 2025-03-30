@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SendNotification {
+    //this code is genrated by ai because i couldn't figure out how to work with the new http v1 by firebase, the documentation is so bad
     private static final String PROJECT_ID = "couponify1-636d2";
     private static final String FCM_URL = "https://fcm.googleapis.com/v1/projects/" + PROJECT_ID + "/messages:send";
     public void SendPushNotification(String notifTitle, String notifBody, String fcmtoken) {

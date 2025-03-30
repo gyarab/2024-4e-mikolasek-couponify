@@ -75,7 +75,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                //firebase dokumentace
+                //this code snippet was taken from firebase documentation
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override

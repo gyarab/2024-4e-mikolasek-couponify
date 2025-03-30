@@ -69,7 +69,20 @@ public class inspoadapter extends RecyclerView.Adapter<inspoholder>{
     public void onBindViewHolder(@NonNull inspoholder holder, int position) {
         InspoCoupon c = inspocouponlist.get(position);
         holder.inspotitle.setText(c.getTitle());
+        //display only the first 15 letters of description as preview
         holder.inspodesc.setText(c.getDesc().substring(0, Math.min(c.getDesc().length(), 15)) + "...");
+        holder.inspo_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, InspoCouponDetail.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                intent.putExtra("coupontitle", c.getTitle());
+                intent.putExtra("coupondesc", c.getDesc());
+                context.startActivity(intent);
+                ((InspirationTab)context).finish();
+            }
+        });
         holder.favbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,8 +104,10 @@ public class inspoadapter extends RecyclerView.Adapter<inspoholder>{
 class inspoholder extends RecyclerView.ViewHolder {
     TextView inspotitle, inspodesc;
     ImageButton favbtn;
+    CardView inspo_item;
     public inspoholder(@NonNull View itemView) {
         super(itemView);
+        inspo_item = itemView.findViewById(R.id.inspo_item);
         inspotitle = itemView.findViewById(R.id.inspotitle);
         inspodesc = itemView.findViewById(R.id.inspodesc);
         favbtn = itemView.findViewById(R.id.favbtn);

@@ -122,6 +122,7 @@ public class WriteNewCoupon extends AppCompatActivity {
             public void onClick(View view) {
                 String coupontitle = String.valueOf(edittexttitle.getText());
                 String coupondesc = String.valueOf(edittextdesc.getText());
+                //check if all fields are filled, only proceed when they are
                 if (coupontitle.isEmpty()) {
                     Toast.makeText(WriteNewCoupon.this, "Enter coupon title.", Toast.LENGTH_SHORT).show();
                     return;

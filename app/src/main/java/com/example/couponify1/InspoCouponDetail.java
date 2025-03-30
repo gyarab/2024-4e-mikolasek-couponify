@@ -5,42 +5,38 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class InspirationFavorites extends AppCompatActivity {
-    String curuserid, curusername;
-    ImageButton friendslistbtn, addfriendsbtn, inspobtn;
-    RecyclerView favinsporv;
-    List<InspoCoupon> favinspolist;
-    DatabaseReference databaseReference;
+public class InspoCouponDetail extends AppCompatActivity {
+    String coupontitle , coupondesc, curusername, curuserid;
+    TextView title, desc;
+    ImageButton backbtn, friendslistbtn, addfriendsbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inspiration_favorites);
+        setContentView(R.layout.activity_inspo_coupon_detail);
         hideNavigationBars();
-        //info
         Bundle bundle = getIntent().getExtras();
+        coupontitle = bundle.getString("coupontitle");
+        coupondesc = bundle.getString("coupondesc");
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
-        //navigation buttons
+
+        title = findViewById(R.id.coupondetailtitle);
+        title.setText(coupontitle);
+        desc = findViewById(R.id.coupondetaildesc);
+        desc.setText(coupondesc);
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
@@ -59,8 +55,8 @@ public class InspirationFavorites extends AppCompatActivity {
                 finish();
             }
         });
-        inspobtn = findViewById(R.id.inspobtn);
-        inspobtn.setOnClickListener(new View.OnClickListener() {
+        backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
@@ -70,28 +66,6 @@ public class InspirationFavorites extends AppCompatActivity {
                 finish();
             }
         });
-        //recycler view
-        favinsporv = findViewById(R.id.favinsporv);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(InspirationFavorites.this, 1);
-        favinsporv.setLayoutManager(gridLayoutManager);
-
-        favinspolist = new ArrayList<>();
-
-        favinspoadapter adapter = new favinspoadapter(InspirationFavorites.this, favinspolist);
-        favinsporv.setAdapter(adapter);
-        //get favorited inspo coupons from database
-        databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-        databaseReference.child("users").child(curuserid).child("favoritedinspo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
-                    InspoCoupon i = itemsnapshot.getValue(InspoCoupon.class);
-                    favinspolist.add(i);
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
-
     }
     private void hideNavigationBars() {
         getWindow().getDecorView().setSystemUiVisibility(

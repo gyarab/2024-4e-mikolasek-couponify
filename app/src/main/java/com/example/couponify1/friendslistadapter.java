@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class friendslistadapter extends RecyclerView.Adapter<friendslistholder> {
+    //thís adapter just shows all users that are current users friends, nothing special
     private Context context;
     private List<String> friendslist;
     private DatabaseReference mDatabase;

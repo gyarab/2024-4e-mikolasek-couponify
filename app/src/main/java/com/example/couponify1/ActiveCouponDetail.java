@@ -30,16 +30,19 @@ public class ActiveCouponDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activecoupondetail);
-        Bundle bundle = getIntent().getExtras();
         hideNavigationBars();
+        //get information from previous activity
+        Bundle bundle = getIntent().getExtras();
         coupontitle = bundle.getString("coupontitle");
         coupondate = bundle.getString("coupondate");
         coupondesc = bundle.getString("coupondesc");
         writtenby = bundle.getString("writtenby");
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
+        //initialize database
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
 
+        //set correct text into textfileds
         title = findViewById(R.id.activecoupondetailtitle);
         title.setText(coupontitle);
         date = findViewById(R.id.activecoupondetaildate);
@@ -47,6 +50,7 @@ public class ActiveCouponDetail extends AppCompatActivity {
         desc = findViewById(R.id.activecoupondetaildesc);
         desc.setText(coupondesc);
 
+        //initialize navigation buttons
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,13 +95,16 @@ public class ActiveCouponDetail extends AppCompatActivity {
                 finish();
             }
         });
+        //dismiss button clears the coupon from active coupons, both current user and friend who wrote the coupon
         dismissbtn = findViewById(R.id.dismissbtn);
         dismissbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //get current users active coupons
                 mDatabase.child("users").child(curuserid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        //go through all active coupons and delete the one that matches the currently selected coupon
                         for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                             Coupon cpn = itemsnapshot.getValue(Coupon.class);
                             if (Objects.equals(cpn.getTitle(), coupontitle) && Objects.equals(cpn.getDesc(), coupondesc)) {
@@ -106,6 +113,7 @@ public class ActiveCouponDetail extends AppCompatActivity {
                         }
                     }
                 });
+                //find id of user that wrote the coupon
                 mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -113,6 +121,7 @@ public class ActiveCouponDetail extends AppCompatActivity {
                             User userr = itemsnapshot.getValue(User.class);
                             if (Objects.equals(userr.getUsername(), writtenby)) {
                                 String writtenbyid = userr.getId();
+                                //now remove the coupon for this user
                                 mDatabase.child("users").child(writtenbyid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -131,7 +140,7 @@ public class ActiveCouponDetail extends AppCompatActivity {
                 });
             }
         });
-
+        //dismiss button shows up only for the one who received the coupon, not the one who wrote it
         if (Objects.equals(curusername, writtenby)) {
             dismissbtn.setVisibility(View.GONE);
         }

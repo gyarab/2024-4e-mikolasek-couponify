@@ -46,7 +46,7 @@ public class favinspoadapter extends RecyclerView.Adapter<favinspoholder>{
         mAuth = FirebaseAuth.getInstance();
         curfirebaseuser = mAuth.getCurrentUser();
         curuserid = curfirebaseuser.getUid();
-
+        //get current user
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -71,11 +71,13 @@ public class favinspoadapter extends RecyclerView.Adapter<favinspoholder>{
     public void onBindViewHolder(@NonNull favinspoholder holder, int position) {
         InspoCoupon c = favinspolist.get(position);
         holder.inspotitle.setText(c.getTitle());
-        holder.inspodesc.setText(c.getDesc().substring(0, Math.min(c.getDesc().length(), 10)) + "...");
+        //only put the first 15 letters of description as a preview
+        holder.inspodesc.setText(c.getDesc().substring(0, Math.min(c.getDesc().length(), 15)) + "...");
         holder.favbtn.setImageResource(R.drawable.baseline_favorite_24);
         holder.favbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //clicking on the heart removes the inspo coupon from favorites
                 mDatabase.child("users").child(curuserid).child("favoritedinspo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {

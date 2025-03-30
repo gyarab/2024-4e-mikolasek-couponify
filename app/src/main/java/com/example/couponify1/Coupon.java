@@ -18,6 +18,7 @@ public class Coupon {
         this.writtenby = writtenby;
         this.writtento = writtento;
         this.type = "Coupon";
+        //convert date into string, firebase cannot save LocalDates
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM. yyyy");
         this.createdon = LocalDate.now().format(formatter);
     }
@@ -32,22 +33,9 @@ public class Coupon {
     public String getCreatedon() {
         return createdon;
     }
-
     public void setCreatedon(String createdon) {
         this.createdon = createdon;
     }
-/*
-    public String getCreatedon() {
-        DateTimeFormatter formatter = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("dd.MM. yyyy");
-        }
-        String formattedString = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formattedString = createdon.format(formatter);
-        }
-        return formattedString;
-    }*/
 
     public String getTitle() {
         return title;

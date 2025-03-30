@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+//this class was done by ai, source in documentation
 public class AccessToken {
 
     private static final String firebaseMessagingScope = "https://www.googleapis.com/auth/firebase.messaging";
