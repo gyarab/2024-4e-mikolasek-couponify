@@ -6,12 +6,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class inspiration_favorites extends AppCompatActivity {
+public class InspirationFavorites extends AppCompatActivity {
     String curuserid, curusername;
     ImageButton friendslistbtn, addfriendsbtn, inspobtn;
     RecyclerView favinsporv;
@@ -55,7 +51,7 @@ public class inspiration_favorites extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -75,12 +71,12 @@ public class inspiration_favorites extends AppCompatActivity {
         });
 
         favinsporv = findViewById(R.id.favinsporv);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(inspiration_favorites.this, 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(InspirationFavorites.this, 1);
         favinsporv.setLayoutManager(gridLayoutManager);
 
         favinspolist = new ArrayList<>();
 
-        favinspoadapter adapter = new favinspoadapter(inspiration_favorites.this, favinspolist);
+        favinspoadapter adapter = new favinspoadapter(InspirationFavorites.this, favinspolist);
         favinsporv.setAdapter(adapter);
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         databaseReference.child("users").child(curuserid).child("favoritedinspo").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

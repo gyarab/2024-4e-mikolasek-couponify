@@ -7,12 +7,8 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -77,7 +73,7 @@ public class ActiveCoupons extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -101,7 +97,7 @@ public class ActiveCoupons extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 auth.signOut();
-                Intent intent = new Intent(getApplicationContext(), welcome.class);
+                Intent intent = new Intent(getApplicationContext(), Welcome.class);
                 startActivity(intent);
                 finish();
             }

@@ -1,6 +1,7 @@
 package com.example.couponify1;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -8,12 +9,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,20 +20,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class activecoupondetail extends AppCompatActivity {
+public class CouponDetail extends AppCompatActivity {
     DatabaseReference mDatabase;
-    String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid;
+    String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid, friendid;
     TextView title, date, desc;
-    ImageButton backbtn, friendslistbtn, inspirationtabbtn, addfriendsbtn;
-    Button dismissbtn;
+    Button redeembtn;
+    ImageButton backbtn, friendslistbtn, addfriendsbtn, inspirationtabbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activecoupondetail);
-        Bundle bundle = getIntent().getExtras();
+        setContentView(R.layout.activity_coupondetail);
         hideNavigationBars();
+        Bundle bundle = getIntent().getExtras();
         coupontitle = bundle.getString("coupontitle");
         coupondate = bundle.getString("coupondate");
         coupondesc = bundle.getString("coupondesc");
@@ -44,17 +44,16 @@ public class activecoupondetail extends AppCompatActivity {
         curuserid = bundle.getString("curuserid");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
 
-        title = findViewById(R.id.activecoupondetailtitle);
+        title = findViewById(R.id.coupondetailtitle);
         title.setText(coupontitle);
-        date = findViewById(R.id.activecoupondetaildate);
+        date = findViewById(R.id.coupondetaildate);
         date.setText("received on: " + coupondate);
-        desc = findViewById(R.id.activecoupondetaildesc);
+        desc = findViewById(R.id.coupondetaildesc);
         desc.setText(coupondesc);
-
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
@@ -62,11 +61,11 @@ public class activecoupondetail extends AppCompatActivity {
                 finish();
             }
         });
-        backbtn = findViewById(R.id.backbtn);
-        backbtn.setOnClickListener(new View.OnClickListener() {
+        addfriendsbtn = findViewById(R.id.addfriendsbtn);
+        addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ActiveCoupons.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -84,28 +83,33 @@ public class activecoupondetail extends AppCompatActivity {
                 finish();
             }
         });
-        addfriendsbtn = findViewById(R.id.addfriendsbtn);
-        addfriendsbtn.setOnClickListener(new View.OnClickListener() {
+        backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FriendDetail.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
+                intent.putExtra("selectedfriend", writtenby);
                 startActivity(intent);
                 finish();
             }
         });
-        dismissbtn = findViewById(R.id.dismissbtn);
-        dismissbtn.setOnClickListener(new View.OnClickListener() {
+        redeembtn = findViewById(R.id.redeembtn);
+        redeembtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                mDatabase.child("users").child(curuserid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                Coupon coupon = new Coupon(coupontitle, coupondesc, writtenby, curusername);
+                coupon.setCreatedon(coupondate);
+                mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
+                mDatabase.child("users").child(curuserid).child("coupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                             Coupon cpn = itemsnapshot.getValue(Coupon.class);
-                            if (Objects.equals(cpn.getTitle(), coupontitle) && Objects.equals(cpn.getDesc(), coupondesc)) {
-                                mDatabase.child("users").child(curuserid).child("activecoupons").child(itemsnapshot.getKey()).removeValue();
+                            if (Objects.equals(cpn.getTitle(), coupon.getTitle()) && Objects.equals(cpn.getDesc(), coupon.getDesc())) {
+                                mDatabase.child("users").child(curuserid).child("coupons").child(itemsnapshot.getKey()).removeValue();
                             }
                         }
                     }
@@ -115,32 +119,34 @@ public class activecoupondetail extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
                             User userr = itemsnapshot.getValue(User.class);
-                            if (Objects.equals(userr.getUsername(), writtenby)) {
-                                String writtenbyid = userr.getId();
-                                mDatabase.child("users").child(writtenbyid).child("activecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
-                                            Coupon cpn = itemsnapshot.getValue(Coupon.class);
-                                            if (Objects.equals(cpn.getTitle(), coupontitle) && Objects.equals(cpn.getDesc(), coupondesc)) {
-                                                System.out.println("key " + itemsnapshot.getKey());
-                                                mDatabase.child("users").child(writtenbyid).child("activecoupons").child(itemsnapshot.getKey()).removeValue();
-                                            }
-                                        }
-                                    }
-                                });
+                            if (userr.getUsername().equals(writtenby)) {
+                                friendid = userr.getId();
+                                mDatabase.child("users").child(friendid).child("activecoupons").push().setValue(coupon);
+                                sendNotifWithID("Coupon redeemed!", curusername + " has redeemed a coupon from you, time to deliver on your promise!", friendid);
                             }
                         }
                     }
                 });
             }
         });
-
-        if (Objects.equals(curusername, writtenby)) {
-            dismissbtn.setVisibility(View.GONE);
-        }
     }
 
+    public void sendNotifWithID(String title, String desc, String friendid){
+        mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                String token = task.getResult().getValue(String.class);
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendNotification sn = new SendNotification();
+                        sn.SendPushNotification(title, desc, token);
+                    }
+                });
+            }
+        });
+    }
     private void hideNavigationBars() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -157,4 +163,5 @@ public class activecoupondetail extends AppCompatActivity {
         super.onResume();
         hideNavigationBars();
     }
+
 }

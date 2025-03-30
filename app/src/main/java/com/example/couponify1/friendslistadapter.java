@@ -1,8 +1,5 @@
 package com.example.couponify1;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -52,7 +49,7 @@ public class friendslistadapter extends RecyclerView.Adapter<friendslistholder> 
         holder.friends_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, frienddetail.class);
+                Intent intent = new Intent(context, FriendDetail.class);
                 intent.putExtra("selectedfriend", friendname);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);

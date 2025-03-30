@@ -4,7 +4,6 @@ package com.example.couponify1;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,7 +75,7 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
         holder.coupons_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, coupondetail.class);
+                Intent intent = new Intent(context, CouponDetail.class);
                 intent.putExtra("coupontitle", coupon.getTitle());
                 intent.putExtra("coupondate", coupon.getCreatedon());
                 intent.putExtra("coupondesc", coupon.getDesc());
@@ -86,7 +83,7 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 context.startActivity(intent);
-                ((frienddetail)context).finish();
+                ((FriendDetail)context).finish();
             }
         });
     }

@@ -4,17 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class pendingrq extends AppCompatActivity {
+public class PendingRq extends AppCompatActivity {
 
     ImageButton searchfriendsbtn2, friendslistbtn, inspirationtabbtn;
     FirebaseAuth mAuth;
@@ -74,12 +68,12 @@ public class pendingrq extends AppCompatActivity {
 
         norqalerts = findViewById(R.id.norqalert);
         pendigrqrv = findViewById(R.id.pendingrqrv);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(pendingrq.this, 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(PendingRq.this, 1);
         pendigrqrv.setLayoutManager(gridLayoutManager);
 
         rqlist = new ArrayList<>();
 
-        rqlistadapter adapter = new rqlistadapter(pendingrq.this, rqlist);
+        rqlistadapter adapter = new rqlistadapter(PendingRq.this, rqlist);
         pendigrqrv.setAdapter(adapter);
 
         databaseReference.child("rq").child(curusername).addValueEventListener(new ValueEventListener() {
@@ -106,7 +100,7 @@ public class pendingrq extends AppCompatActivity {
         searchfriendsbtn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

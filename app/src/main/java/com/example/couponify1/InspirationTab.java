@@ -6,12 +6,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 public class InspirationTab extends AppCompatActivity {
     ImageButton friendslistbtn, addfriendsbtn, favoritesbtn;
@@ -59,7 +52,7 @@ public class InspirationTab extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -70,7 +63,7 @@ public class InspirationTab extends AppCompatActivity {
         favoritesbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), inspiration_favorites.class);
+                Intent intent = new Intent(getApplicationContext(), InspirationFavorites.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

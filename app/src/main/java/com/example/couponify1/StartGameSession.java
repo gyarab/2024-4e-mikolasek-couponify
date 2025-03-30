@@ -1,6 +1,5 @@
 package com.example.couponify1;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,12 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class startgamesession extends AppCompatActivity {
+public class StartGameSession extends AppCompatActivity {
     String selectedfriend,selectedfriendid, curusername, curuserid;
     ImageButton backbtn, friendslistbtn, addfriendsbtn, inspirationtabbtn;
     TextView startgametitle, numcoupons1, numcoupons2, oddwarning, zerowarning;
@@ -168,7 +163,7 @@ public class startgamesession extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -190,7 +185,7 @@ public class startgamesession extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), gamecoupons.class);
+                Intent intent = new Intent(getApplicationContext(), GameCoupons.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 intent.putExtra("selectedfriend", selectedfriend);

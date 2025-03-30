@@ -7,13 +7,9 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class gamecoupons extends AppCompatActivity {
+public class GameCoupons extends AppCompatActivity {
     ImageButton friendslistbtn, addfriendsbtn, inspirationtabbtn, receivedcouponsbtn, writecouponbtn, startgamebtn;
     String curusername, curuserid, selectedfriend;
     TextView textView, nocouponsalert, active_inactive;
@@ -75,7 +71,7 @@ public class gamecoupons extends AppCompatActivity {
         receivedcouponsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), frienddetail.class);
+                Intent intent = new Intent(getApplicationContext(), FriendDetail.class);
                 intent.putExtra("selectedfriend", selectedfriend);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
@@ -87,7 +83,7 @@ public class gamecoupons extends AppCompatActivity {
         startgamebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), startgamesession.class);
+                Intent intent = new Intent(getApplicationContext(), StartGameSession.class);
                 intent.putExtra("selectedfriend", selectedfriend);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
@@ -99,7 +95,7 @@ public class gamecoupons extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -110,7 +106,7 @@ public class gamecoupons extends AppCompatActivity {
         writecouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), writenewgamecoupon.class);
+                Intent intent = new Intent(getApplicationContext(), WriteNewGameCoupon.class);
                 intent.putExtra("selectedfriend", selectedfriend);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
@@ -123,12 +119,12 @@ public class gamecoupons extends AppCompatActivity {
         active_inactive = findViewById(R.id.active_inactive);
         nocouponsalert = findViewById(R.id.nocouponsalert);
         gamecouponlistrv = findViewById(R.id.gamecouponlistrv);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(gamecoupons.this, 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(GameCoupons.this, 1);
         gamecouponlistrv.setLayoutManager(gridLayoutManager);
 
         Gamecouponlist = new ArrayList<>();
 
-        Gamecouponlistadapter adapter = new Gamecouponlistadapter(gamecoupons.this, Gamecouponlist);
+        Gamecouponlistadapter adapter = new Gamecouponlistadapter(GameCoupons.this, Gamecouponlist);
         gamecouponlistrv.setAdapter(adapter);
 
         databaseReference = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();

@@ -5,14 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class welcome extends AppCompatActivity {
+public class Welcome extends AppCompatActivity {
     FirebaseAuth mAuth;
     Button wloginbtn, wregisterbtn;
     String curuserid, curusername;
@@ -51,7 +46,7 @@ public class welcome extends AppCompatActivity {
         wregisterbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), register.class);
+                Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,7 +55,7 @@ public class welcome extends AppCompatActivity {
         wloginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), login.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
             }

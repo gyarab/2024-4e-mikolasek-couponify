@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class register extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword, editTextUsername;
     Button regbtn;
@@ -51,7 +51,7 @@ public class register extends AppCompatActivity {
         textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), login.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
             }
@@ -73,17 +73,17 @@ public class register extends AppCompatActivity {
                     return;
                 }*/
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(register.this, "Enter your email.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Enter your email.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(register.this, "Enter your password.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Enter your password.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (TextUtils.isEmpty(username)) {
-                    Toast.makeText(register.this, "Enter your username.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Enter your username.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
@@ -97,13 +97,13 @@ public class register extends AppCompatActivity {
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     String curuserid = Objects.requireNonNull(user).getUid();
                                     addUserToDB(curuserid, username);
-                                    Toast.makeText(register.this, "Account created.",
+                                    Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), login.class);
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(register.this, "Account creation failed.",
+                                    Toast.makeText(Register.this, "Account creation failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }

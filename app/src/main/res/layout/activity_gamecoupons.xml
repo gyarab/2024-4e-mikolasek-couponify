@@ -5,7 +5,7 @@
     android:id="@+id/gamecoupons"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gamecoupons"
+    tools:context=".GameCoupons"
     android:orientation="vertical">
 
     <LinearLayout

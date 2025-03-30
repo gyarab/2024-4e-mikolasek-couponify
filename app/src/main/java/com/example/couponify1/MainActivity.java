@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (user == null || curuserid == null) {
-            Intent intent = new Intent(getApplicationContext(), welcome.class);
+            Intent intent = new Intent(getApplicationContext(), Welcome.class);
             startActivity(intent);
             finish();
         }
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 auth.signOut();
-                Intent intent = new Intent(getApplicationContext(), welcome.class);
+                Intent intent = new Intent(getApplicationContext(), Welcome.class);
                 startActivity(intent);
                 finish();
             }

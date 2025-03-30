@@ -74,7 +74,7 @@ public class Gamecouponlistadapter extends RecyclerView.Adapter<Gamecouponlistho
         holder.gamecoupons_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, gamecoupondetail.class);
+                Intent intent = new Intent(context, GameCouponDetail.class);
                 intent.putExtra("coupontitle", coupon.getTitle());
                 intent.putExtra("coupondate", coupon.getCreatedon());
                 intent.putExtra("coupondesc", coupon.getDesc());
@@ -84,7 +84,7 @@ public class Gamecouponlistadapter extends RecyclerView.Adapter<Gamecouponlistho
                 intent.putExtra("curuserid", curuserid);
                 intent.putExtra("isactive", isactive);
                 context.startActivity(intent);
-                ((gamecoupons)context).finish();
+                ((GameCoupons)context).finish();
             }
         });
     }

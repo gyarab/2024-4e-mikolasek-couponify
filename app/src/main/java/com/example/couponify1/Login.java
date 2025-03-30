@@ -1,6 +1,5 @@
 package com.example.couponify1;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword;
     Button loginbtn;
@@ -52,7 +51,7 @@ public class login extends AppCompatActivity {
 
         textview = findViewById(R.id.registertext);
         textview.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), register.class);
+            Intent intent = new Intent(getApplicationContext(), Register.class);
             startActivity(intent);
             finish();
         });
@@ -67,12 +66,12 @@ public class login extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(email)) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Enter your email.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Enter your email.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(login.this, "Enter your password.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Enter your password.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -108,7 +107,7 @@ public class login extends AppCompatActivity {
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(login.this, "Authentication failed.",
+                                    Toast.makeText(Login.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }

@@ -5,7 +5,7 @@
     android:id="@+id/writenewgamecoupon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".writenewgamecoupon"
+    tools:context=".WriteNewGameCoupon"
     android:orientation="vertical">
 
     <LinearLayout

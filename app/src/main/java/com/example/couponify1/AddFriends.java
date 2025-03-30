@@ -5,37 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class addfriends extends AppCompatActivity {
+public class AddFriends extends AppCompatActivity {
 
     RecyclerView addfriendsrv;
     SearchView addfriendssearch;
@@ -83,7 +74,7 @@ public class addfriends extends AppCompatActivity {
         pendingrqbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), pendingrq.class);
+                Intent intent = new Intent(getApplicationContext(), PendingRq.class);
                 intent.putExtra("curusername", curusername);
                 startActivity(intent);
                 finish();
@@ -115,12 +106,12 @@ public class addfriends extends AppCompatActivity {
 
         addfriendsrv = findViewById(R.id.addfriendsrv);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(addfriends.this, 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(AddFriends.this, 1);
         addfriendsrv.setLayoutManager(gridLayoutManager);
 
         userlist = new ArrayList<>();
 
-        userlistadapter adapter = new userlistadapter(addfriends.this, userlist);
+        userlistadapter adapter = new userlistadapter(AddFriends.this, userlist);
         addfriendsrv.setAdapter(adapter);
 
         querry = "";

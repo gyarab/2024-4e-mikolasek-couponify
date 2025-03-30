@@ -10,12 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,13 +19,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class writenewgamecoupon extends AppCompatActivity {
+public class WriteNewGameCoupon extends AppCompatActivity {
     String selectedfriend, selectedfriendid, curusername, curuserid;
     TextView textview2;
     TextInputEditText edittexttitle, edittextdesc;
@@ -67,7 +61,7 @@ public class writenewgamecoupon extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), gamecoupons.class);
+                Intent intent = new Intent(getApplicationContext(), GameCoupons.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 intent.putExtra("selectedfriend", selectedfriend);
@@ -101,7 +95,7 @@ public class writenewgamecoupon extends AppCompatActivity {
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                Intent intent = new Intent(getApplicationContext(), AddFriends.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -117,11 +111,11 @@ public class writenewgamecoupon extends AppCompatActivity {
                 String coupontitle = String.valueOf(edittexttitle.getText());
                 String coupondesc = String.valueOf(edittextdesc.getText());
                 if (coupontitle.isEmpty()) {
-                    Toast.makeText(writenewgamecoupon.this, "Enter coupon title.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WriteNewGameCoupon.this, "Enter coupon title.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (coupondesc.isEmpty()) {
-                    Toast.makeText(writenewgamecoupon.this, "Enter coupon description.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WriteNewGameCoupon.this, "Enter coupon description.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 GameCoupon coupon = null;
