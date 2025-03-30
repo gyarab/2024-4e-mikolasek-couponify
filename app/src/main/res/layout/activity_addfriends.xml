@@ -88,6 +88,7 @@
             android:src="@drawable/baseline_local_activity_24" />
 
         <ImageButton
+            android:id="@+id/inspirationtabbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

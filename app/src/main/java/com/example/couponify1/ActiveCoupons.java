@@ -30,7 +30,7 @@ public class ActiveCoupons extends AppCompatActivity {
     TextView hellotext, nocouponsalert;
     FirebaseAuth auth;
     String curuserid, curusername;
-    ImageButton addfriendsbtn, friendsbtn, friendslistbtn, logoutbtn;
+    ImageButton addfriendsbtn, friendsbtn, friendslistbtn, inspirationtabbtn, logoutbtn;
     RecyclerView activecouponsrv;
     DatabaseReference databaseReference;
 
@@ -62,12 +62,33 @@ public class ActiveCoupons extends AppCompatActivity {
                 finish();
             }
         });
-
+        friendslistbtn = findViewById(R.id.friendslistbtn);
+        friendslistbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
         addfriendsbtn = findViewById(R.id.addfriendsbtn);
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

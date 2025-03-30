@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Coupon {
-    String title, desc, writtenby, writtento, createdon;
+    String title, desc, writtenby, writtento, createdon, type;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Coupon(String title, String desc, String writtenby, String writtento) {
@@ -17,11 +17,16 @@ public class Coupon {
         this.desc = desc;
         this.writtenby = writtenby;
         this.writtento = writtento;
+        this.type = "Coupon";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM. yyyy");
         this.createdon = LocalDate.now().format(formatter);
     }
 
     public Coupon() {
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCreatedon() {
@@ -74,5 +79,9 @@ public class Coupon {
 
     public void setWrittento(String writtento) {
         this.writtento = writtento;
+    }
+
+    public String getType() {
+        return type;
     }
 }

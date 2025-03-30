@@ -1,7 +1,10 @@
 package com.example.couponify1;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,33 +50,18 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
         curfirebaseuser = mAuth.getCurrentUser();
         curuserid = curfirebaseuser.getUid();
 
-
-
-/*
-        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()) {
-                    User userr = itemSnapshot.getValue(User.class);
-                    if (Objects.equals(userr.getId(), curuserid)) {
-                        curusername = userr.getUsername();
-                        curuser = userr;
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });*/
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activecoupons_listitem, parent, false);
         return new ActiveCouponsholder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ActiveCouponsholder holder, int position) {
         Coupon coupon = activecouponList.get(position);
+        System.out.println("type: " + coupon.getType());
+        if (Objects.equals(coupon.getType(), "GameCoupon")) {
+            holder.activecoupons_item.setCardBackgroundColor(Color.parseColor("#FA9292"));
+        }
         holder.coupontitle.setText(coupon.getTitle());
         mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -83,10 +71,8 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
                     if (Objects.equals(userr.getId(), curuserid)) {
                         curusername = userr.getUsername();
                         curuser = userr;
-                        writtentome = false;
                         if (Objects.equals(coupon.getWrittento(), curusername)) {
                             holder.couponfrom_to.setText("From: " + coupon.getWrittenby());
-                            writtentome = true;
                         } else {
                             holder.couponfrom_to.setText("To: " + coupon.getWrittento());
                         }
@@ -105,8 +91,8 @@ public class activecouponsadapter extends RecyclerView.Adapter<ActiveCouponshold
                 intent.putExtra("writtenby", coupon.getWrittenby());
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
-                intent.putExtra("writtentome", writtentome);
                 context.startActivity(intent);
+                ((ActiveCoupons)context).finish();
             }
         });
     }

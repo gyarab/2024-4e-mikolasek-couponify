@@ -12,14 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class InspirationTab extends AppCompatActivity {
-    ImageButton friendslistbtn, addfriendsbtn, favoritesbtn;
+public class inspiration_favorites extends AppCompatActivity {
     String curuserid, curusername;
+    ImageButton friendslistbtn, addfriendsbtn, inspobtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inspiration_tab);
+        setContentView(R.layout.activity_inspiration_favorites);
         hideNavigationBars();
         Bundle bundle = getIntent().getExtras();
         curusername = bundle.getString("curusername");
@@ -47,11 +47,11 @@ public class InspirationTab extends AppCompatActivity {
                 finish();
             }
         });
-        favoritesbtn = findViewById(R.id.favoritesbtn);
-        favoritesbtn.setOnClickListener(new View.OnClickListener() {
+        inspobtn = findViewById(R.id.inspobtn);
+        inspobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), inspiration_favorites.class);
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);
@@ -59,8 +59,6 @@ public class InspirationTab extends AppCompatActivity {
             }
         });
     }
-
-
     private void hideNavigationBars() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

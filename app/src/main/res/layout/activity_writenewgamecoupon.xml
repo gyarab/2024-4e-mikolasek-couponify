@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:orientation="vertical"
+    android:id="@+id/writenewgamecoupon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activecoupondetail"
-    android:gravity="center|top"
-    android:weightSum="100">
+    tools:context=".writenewgamecoupon"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,49 +29,62 @@
         android:layout_weight="98"
         android:orientation="vertical"
         android:padding="20dp">
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textSize="25sp"
+            android:text="Write new coupon to NAME"
+            />
 
-        <TextView
-            android:id="@+id/activecoupondetailtitle"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
-            android:text="TITLE OF COUPON" />
-        <TextView
-            android:id="@+id/activecoupondetaildate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:text="DATE OF COUPON" />
+            app:cursorColor="@color/couponifyred"
+            app:hintTextColor="@color/couponifyred"
+            app:boxStrokeColor="@color/couponifyred"
+            android:layout_marginBottom="15dp"
+            app:boxStrokeWidth="2dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittexttitle"
+                android:hint="@string/enter_the_title_of_the_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/activecoupondetaildesc"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:text="DESCRIPTIOOOOON" />
+            app:cursorColor="@color/couponifyred"
+            app:hintTextColor="@color/couponifyred"
+            app:boxStrokeColor="@color/couponifyred"
+            android:layout_marginBottom="15dp"
+            app:boxStrokeWidth="2dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittextdesc"
+                android:hint="@string/enter_the_description_of_the_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/dismissbtn"
+            android:id="@+id/sendcouponbtn"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/couponifyblue"
-            android:text="Dismiss" />
-
+            android:layout_gravity="center"
+            android:text="Send"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittextdesc"
+            android:backgroundTint="@color/couponifyred"/>
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:layout_height="50dp"
         android:layout_weight="1"
-        android:weightSum="3"
         android:background="@color/black">
 
         <ImageButton
@@ -100,4 +111,5 @@
             android:backgroundTint="@color/black"
             android:src="@drawable/baseline_reviews_24" />
     </LinearLayout>
+
 </LinearLayout>

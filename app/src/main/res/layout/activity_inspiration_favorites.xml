@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pendingrq"
-    android:gravity="top"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".pendingrq">
+    tools:context=".inspiration_favorites">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_weight="1"
-        android:weightSum="2"
         android:background="@color/black"
-        >
+        android:layout_height="40dp"
+        android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/searchfriendsbtn2"
+            android:id="@+id/inspobtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:src="@drawable/baseline_person_search_24" />
+            android:src="@drawable/baseline_auto_awesome_24" />
 
         <ImageButton
-            android:id="@+id/pendingrqbtn"
+            android:id="@+id/favoritesbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:src="@drawable/outline_move_to_inbox_24_pressed" />
+            android:src="@drawable/baseline_favorite_border_24" />
+
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,25 +40,18 @@
         android:orientation="vertical"
         android:layout_weight="98">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/norqalert"
-            android:visibility="gone"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/no_active_friend_requests"/>
+            android:layout_height="match_parent"
+            android:id="@+id/friendslistrv"
+            android:layout_margin="12dp"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/pendingrqrv"
-        android:scrollbars="vertical"
-        android:layout_margin="12dp" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnlayout"
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:layout_height="50dp"
@@ -74,7 +65,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:src="@drawable/outline_person_add_alt_1_24_pressed" />
+            android:src="@drawable/baseline_person_add_alt_1_24" />
 
         <ImageButton
             android:id="@+id/friendslistbtn"
@@ -85,14 +76,11 @@
             android:src="@drawable/baseline_local_activity_24" />
 
         <ImageButton
-            android:id="@+id/inspirationtabbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/black"
-            android:src="@drawable/baseline_reviews_24" />
+            android:src="@drawable/outline_reviews_24_pressed" />
     </LinearLayout>
-
-
 
 </LinearLayout>

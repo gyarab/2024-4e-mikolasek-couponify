@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,36 +21,35 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class writenewcoupon extends AppCompatActivity {
-
+public class writenewgamecoupon extends AppCompatActivity {
     String selectedfriend, selectedfriendid, curusername, curuserid;
     TextView textview2;
     TextInputEditText edittexttitle, edittextdesc;
     Button sendcouponbtn;
     private DatabaseReference mDatabase;
-    List<Coupon> selectedfriendcoupons;
     ImageButton backbtn, friendslistbtn, inspirationtabbtn, addfriendsbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_writenewcoupon);
+        setContentView(R.layout.activity_writenewgamecoupon);
         hideNavigationBars();
         Bundle bundle = getIntent().getExtras();
         selectedfriend = (String) bundle.get("selectedfriend");
+        curusername = bundle.getString("curusername");
+        curuserid = bundle.getString("curuserid");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
+        textview2 = findViewById(R.id.textView2);
+        textview2.setText("Write a new game coupon for " + selectedfriend);
+
         mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -59,23 +57,24 @@ public class writenewcoupon extends AppCompatActivity {
                     User userr = s.getValue(User.class);
                     if (userr.getUsername().equals(selectedfriend)) {
                         selectedfriendid = userr.getId();
-                        mDatabase.child("users").child(selectedfriendid).child("coupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                GenericTypeIndicator<List<Coupon>> gti = new GenericTypeIndicator<List<Coupon>>() {};
-                                selectedfriendcoupons = task.getResult().getValue(gti);
-                            }
-                        });
                         break;
                     }
                 }
             }
         });
-        curusername = bundle.getString("curusername");
-        curuserid = bundle.getString("curuserid");
-        textview2 = findViewById(R.id.textView2);
-        textview2.setText("Write a new coupon for " + selectedfriend);
 
+        backbtn = findViewById(R.id.backbtn);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), gamecoupons.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                intent.putExtra("selectedfriend", selectedfriend);
+                startActivity(intent);
+                finish();
+            }
+        });
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,52 +108,32 @@ public class writenewcoupon extends AppCompatActivity {
                 finish();
             }
         });
-        backbtn = findViewById(R.id.backbtn);
-        backbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), frienddetail.class);
-                intent.putExtra("curusername", curusername);
-                intent.putExtra("curuserid", curuserid);
-                intent.putExtra("selectedfriend", selectedfriend);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         sendcouponbtn = findViewById(R.id.sendcouponbtn);
         edittexttitle = findViewById(R.id.edittexttitle);
         edittextdesc = findViewById(R.id.edittextdesc);
         sendcouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 String coupontitle = String.valueOf(edittexttitle.getText());
                 String coupondesc = String.valueOf(edittextdesc.getText());
                 if (coupontitle.isEmpty()) {
-                    Toast.makeText(writenewcoupon.this, "Enter coupon title.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(writenewgamecoupon.this, "Enter coupon title.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (coupondesc.isEmpty()) {
-                    Toast.makeText(writenewcoupon.this, "Enter coupon description.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(writenewgamecoupon.this, "Enter coupon description.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Coupon coupon = null;
+                GameCoupon coupon = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    coupon = new Coupon(coupontitle, coupondesc, curusername, selectedfriend);
+                    coupon = new GameCoupon(coupontitle, coupondesc, curusername, selectedfriend);
                 }
-                if (selectedfriendcoupons == null || selectedfriendcoupons.isEmpty()) {
-                    List<Coupon> list = new ArrayList<>();
-                    list.add(coupon);
-                    mDatabase.child("users").child(selectedfriendid).child("coupons").setValue(list);
-                } else {
-                    selectedfriendcoupons.add(coupon);
-                    mDatabase.child("users").child(selectedfriendid).child("coupons").setValue(selectedfriendcoupons);
-                }
-                sendNotifWithID("New coupon received!", "you have received a new coupon from " + curusername, selectedfriendid);
+                mDatabase.child("users").child(selectedfriendid).child("gamecoupons").push().setValue(coupon);
+                mDatabase.child("users").child(curuserid).child("gamecoupons").push().setValue(coupon);
+                sendNotifWithID("New game coupon received!", "you have received a new game coupon from " + curusername, selectedfriendid);
             }
         });
     }
-
     private void hideNavigationBars() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frienddetail"
+    android:id="@+id/gamecoupons"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frienddetail"
-    android:weightSum="100"
+    tools:context=".gamecoupons"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,22 +26,22 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:src="@drawable/outline_move_to_inbox_24_pressed" />
+                android:src="@drawable/baseline_move_to_inbox_24" />
 
             <ImageButton
-                android:id="@+id/gamecouponsbtn"
+                android:id="@+id/gamesessionbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:src="@drawable/baseline_videogame_asset_24" />
+                android:src="@drawable/outline_videogame_asset_24" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Game coupons shared with NAME"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:textSize="25sp"
@@ -50,12 +49,21 @@
 
     </LinearLayout>
 
-
     <LinearLayout
+        android:id="@+id/gamecontrols"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="98"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/active_inactive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:text="Game session active/inactive." />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,28 +71,47 @@
             android:visibility="gone"
             android:gravity="center"
             android:layout_margin="20dp"
-            android:layout_marginTop="40dp"
-            android:text="@string/no_available_coupons"/>
+            android:text="@string/no_game_coupons_yet"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/couponlistrv"
+            android:id="@+id/gamecouponlistrv"
             android:scrollbars="vertical"
             android:layout_margin="12dp"
             />
 
 
     </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_gravity="end|bottom"
-        android:id="@+id/writecouponbtn"
-        android:src="@drawable/baseline_add_24"
-        android:backgroundTint="@color/couponifyblue"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/startgamebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/couponifyred"
+            android:src="@drawable/baseline_play_arrow_24"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/writecouponbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/couponifyred"
+            android:src="@drawable/baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

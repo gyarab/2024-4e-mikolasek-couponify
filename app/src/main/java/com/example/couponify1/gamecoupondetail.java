@@ -27,33 +27,75 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class coupondetail extends AppCompatActivity {
+public class gamecoupondetail extends AppCompatActivity {
     DatabaseReference mDatabase;
-    String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid, friendid;
-    TextView title, date, desc;
+    String gamecoupontitle, gamecoupondesc, writtenby, curusername, curuserid, writtento, friendid, friendname;
+    TextView title, desc;
     Button redeembtn;
     ImageButton backbtn, friendslistbtn, addfriendsbtn, inspirationtabbtn;
+    Boolean isactive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coupondetail);
+        setContentView(R.layout.activity_gamecoupondetail);
         hideNavigationBars();
         Bundle bundle = getIntent().getExtras();
-        coupontitle = bundle.getString("coupontitle");
-        coupondate = bundle.getString("coupondate");
-        coupondesc = bundle.getString("coupondesc");
+        gamecoupontitle = bundle.getString("coupontitle");
+        gamecoupondesc = bundle.getString("coupondesc");
         writtenby = bundle.getString("writtenby");
+        writtento = bundle.getString("writtento");
         curusername = bundle.getString("curusername");
         curuserid = bundle.getString("curuserid");
+        isactive = bundle.getBoolean("isactive");
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-
         title = findViewById(R.id.coupondetailtitle);
-        title.setText(coupontitle);
-        date = findViewById(R.id.coupondetaildate);
-        date.setText("received on: " + coupondate);
+        title.setText(gamecoupontitle);
         desc = findViewById(R.id.coupondetaildesc);
-        desc.setText(coupondesc);
+        desc.setText(gamecoupondesc);
+
+        redeembtn = findViewById(R.id.redeembtn);
+        if (!isactive) {
+            redeembtn.setVisibility(View.GONE);
+        }
+        redeembtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                if (Objects.equals(writtenby, curusername)) {
+                    friendname = writtento;
+                } else {
+                    friendname = writtenby;
+                }
+                GameCoupon coupon = new GameCoupon(gamecoupontitle, gamecoupondesc, curusername, friendname);
+                mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
+                mDatabase.child("users").child(curuserid).child("gamecoupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                            GameCoupon cpn = itemsnapshot.getValue(GameCoupon.class);
+                            if (Objects.equals(cpn.getTitle(), coupon.getTitle()) && Objects.equals(cpn.getDesc(), coupon.getDesc())) {
+                                itemsnapshot.getRef().removeValue();
+                            }
+                        }
+                    }
+                });
+                mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
+                            User userr = itemsnapshot.getValue(User.class);
+                            if (userr.getUsername().equals(friendname)) {
+                                friendid = userr.getId();
+                                mDatabase.child("users").child(friendid).child("activecoupons").push().setValue(coupon);
+                                sendNotifWithID("Coupon redeemed!", curusername + " has redeemed a coupon from you, time to deliver on your promise!", friendid);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
         friendslistbtn = findViewById(R.id.friendslistbtn);
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,50 +133,19 @@ public class coupondetail extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), frienddetail.class);
+                Intent intent = new Intent(getApplicationContext(), gamecoupons.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
-                intent.putExtra("selectedfriend", writtenby);
+                if (Objects.equals(writtenby, curusername)) {
+                    intent.putExtra("selectedfriend", writtento);
+                } else {
+                    intent.putExtra("selectedfriend", writtenby);
+                }
                 startActivity(intent);
                 finish();
             }
         });
-        redeembtn = findViewById(R.id.redeembtn);
-        redeembtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                Coupon coupon = new Coupon(coupontitle, coupondesc, writtenby, curusername);
-                coupon.setCreatedon(coupondate);
-                mDatabase.child("users").child(curuserid).child("activecoupons").push().setValue(coupon);
-                mDatabase.child("users").child(curuserid).child("coupons").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
-                            Coupon cpn = itemsnapshot.getValue(Coupon.class);
-                            if (Objects.equals(cpn.getTitle(), coupon.getTitle()) && Objects.equals(cpn.getDesc(), coupon.getDesc())) {
-                                mDatabase.child("users").child(curuserid).child("coupons").child(itemsnapshot.getKey()).removeValue();
-                            }
-                        }
-                    }
-                });
-                mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        for (DataSnapshot itemsnapshot: task.getResult().getChildren()) {
-                            User userr = itemsnapshot.getValue(User.class);
-                            if (userr.getUsername().equals(writtenby)) {
-                                friendid = userr.getId();
-                                mDatabase.child("users").child(friendid).child("activecoupons").push().setValue(coupon);
-                                sendNotifWithID("Coupon redeemed!", curusername + " has redeemed a coupon from you, time to deliver on your promise!", friendid);
-                            }
-                        }
-                    }
-                });
-            }
-        });
     }
-
     public void sendNotifWithID(String title, String desc, String friendid){
         mDatabase.child("Tokens").child(friendid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -167,5 +178,4 @@ public class coupondetail extends AppCompatActivity {
         super.onResume();
         hideNavigationBars();
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.couponify1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,7 +27,7 @@ public class activecoupondetail extends AppCompatActivity {
     DatabaseReference mDatabase;
     String coupontitle, coupondate, coupondesc, writtenby, curusername, curuserid;
     TextView title, date, desc;
-    ImageButton backbtn, friendslistbtn;
+    ImageButton backbtn, friendslistbtn, inspirationtabbtn, addfriendsbtn;
     Button dismissbtn;
 
     @Override
@@ -54,6 +55,10 @@ public class activecoupondetail extends AppCompatActivity {
         friendslistbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });
@@ -61,6 +66,32 @@ public class activecoupondetail extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ActiveCoupons.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        addfriendsbtn = findViewById(R.id.addfriendsbtn);
+        addfriendsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), addfriends.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
                 finish();
             }
         });

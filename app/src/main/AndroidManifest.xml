@@ -16,6 +16,21 @@
         android:theme="@style/Theme.Couponify1"
         tools:targetApi="31">
         <activity
+            android:name=".startgamesession"
+            android:exported="false" />
+        <activity
+            android:name=".gamecoupondetail"
+            android:exported="false" />
+        <activity
+            android:name=".writenewgamecoupon"
+            android:exported="false" />
+        <activity
+            android:name=".gamecoupons"
+            android:exported="false" />
+        <activity
+            android:name=".inspiration_favorites"
+            android:exported="false" />
+        <activity
             android:name=".InspirationTab"
             android:exported="false" />
         <activity

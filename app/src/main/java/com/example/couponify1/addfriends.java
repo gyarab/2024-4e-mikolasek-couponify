@@ -44,7 +44,7 @@ public class addfriends extends AppCompatActivity {
     FirebaseAuth mAuth;
     String curuserid, curusername, querry;
     List<String> curuserfriends;
-    ImageButton pendingrqbtn, friendslistbtn;
+    ImageButton pendingrqbtn, friendslistbtn, inspirationtabbtn;
 
 
     @SuppressLint("MissingInflatedId")
@@ -95,6 +95,17 @@ public class addfriends extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

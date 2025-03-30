@@ -18,7 +18,7 @@
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/friendsbtn"
+            android:id="@+id/inspobtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -26,7 +26,7 @@
             android:src="@drawable/outline_auto_awesome_24" />
 
         <ImageButton
-            android:id="@+id/activecouponsbtn"
+            android:id="@+id/favoritesbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

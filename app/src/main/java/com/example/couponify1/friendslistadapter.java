@@ -57,6 +57,7 @@ public class friendslistadapter extends RecyclerView.Adapter<friendslistholder> 
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 context.startActivity(intent);
+                ((MainActivity)context).finish();
             }
         });
     }

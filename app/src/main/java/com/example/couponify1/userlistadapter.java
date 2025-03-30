@@ -70,7 +70,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
                     if (!rqlist.contains(curusername)) {
                         rqlist.add(curusername);
                         mDatabase.child("rq").child(friendusername).setValue(rqlist);
-                        sendNotifFull("Friend request received!", curusername + " has sent you a friend request.", friendusername);
+                        sendNotifWithUsername("Friend request received!", curusername + " has sent you a friend request.", friendusername);
                         Toast.makeText(context, "Friend request sent.",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -95,10 +95,6 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
     public int getItemCount() {
         return userlist.size();
     }
-
-    public void searchusers(String searchedname){
-
-    }
     private void findCuruser() {
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -121,7 +117,7 @@ public class userlistadapter extends RecyclerView.Adapter<userlistholder> {
             }
         });
     }
-    public void sendNotifFull(String title, String desc, String friendusername){
+    public void sendNotifWithUsername(String title, String desc, String friendusername){
         mDatabase.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

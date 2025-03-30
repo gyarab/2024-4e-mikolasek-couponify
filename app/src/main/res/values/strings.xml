@@ -20,4 +20,10 @@
     <string name="enter_the_description_of_the_coupon">Enter the description of the coupon</string>
     <string name="redeem">Redeem</string>
     <string name="active_coupons">Active coupons</string>
+    <string name="no_game_coupons_yet">No game coupons yet.</string>
+    <string name="insufficient_coupons">Insufficient coupons.</string>
+    <string name="start">Start</string>
+    <string name="sum_of_coupons_must_be_odd">Sum of coupons must be odd.</string>
+    <string name="game_session_inactive">Game session inactive.</string>
+    <string name="game_session_active">Game session active.</string>
 </resources>

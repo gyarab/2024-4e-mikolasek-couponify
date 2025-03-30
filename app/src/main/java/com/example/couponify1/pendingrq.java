@@ -32,7 +32,7 @@ import java.util.Objects;
 
 public class pendingrq extends AppCompatActivity {
 
-    ImageButton searchfriendsbtn2, friendslistbtn;
+    ImageButton searchfriendsbtn2, friendslistbtn, inspirationtabbtn;
     FirebaseAuth mAuth;
     String curuserid, curusername;
     DatabaseReference databaseReference;
@@ -119,6 +119,17 @@ public class pendingrq extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
                 startActivity(intent);

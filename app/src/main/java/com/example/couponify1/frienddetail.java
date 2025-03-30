@@ -30,7 +30,7 @@ public class frienddetail extends AppCompatActivity {
 
     TextView textview, nocouponsalert;
     RecyclerView couponlistrv;
-    ImageButton friendslistbtn, addfriendsbtn;
+    ImageButton friendslistbtn, addfriendsbtn, inspirationtabbtn, gamecouponsbtn;
     FloatingActionButton writecouponbtn;
     List<Coupon> Couponlist;
     DatabaseReference databaseReference;
@@ -70,7 +70,29 @@ public class frienddetail extends AppCompatActivity {
                 finish();
             }
         });
-
+        gamecouponsbtn = findViewById(R.id.gamecouponsbtn);
+        gamecouponsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), gamecoupons.class);
+                intent.putExtra("selectedfriend", selectedfriend);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
+        inspirationtabbtn = findViewById(R.id.inspirationtabbtn);
+        inspirationtabbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InspirationTab.class);
+                intent.putExtra("curusername", curusername);
+                intent.putExtra("curuserid", curuserid);
+                startActivity(intent);
+                finish();
+            }
+        });
         addfriendsbtn = findViewById(R.id.addfriendsbtn);
         addfriendsbtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,10 +1,7 @@
 package com.example.couponify1;
 
-
-
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,28 +19,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
-public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
+public class Gamecouponlistadapter extends RecyclerView.Adapter<Gamecouponlistholder>{
     private Context context;
-    private List<Coupon> couponList;
-    private DatabaseReference mDatabase;
+    private List<GameCoupon> gamecouponList;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     String curuserid, curusername;
     FirebaseUser curfirebaseuser;
     User curuser;
+    Boolean isactive;
 
-    public Couponlistadapter(Context context, List<Coupon> couponList) {
+    public Gamecouponlistadapter(Context context, List<GameCoupon> gamecouponList) {
         this.context = context;
-        this.couponList = couponList;
+        this.gamecouponList = gamecouponList;
     }
 
     @NonNull
     @Override
-    public Couponlistholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Gamecouponlistholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mDatabase = FirebaseDatabase.getInstance("https://couponify1-636d2-default-rtdb.europe-west1.firebasedatabase.app").getReference();
         mAuth = FirebaseAuth.getInstance();
         curfirebaseuser = mAuth.getCurrentUser();
@@ -61,49 +57,50 @@ public class Couponlistadapter extends RecyclerView.Adapter<Couponlistholder> {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_listitem, parent, false);
-        return new Couponlistholder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gamecoupon_listitem, parent, false);
+        return new Gamecouponlistholder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Couponlistholder holder, int position) {
-        Coupon coupon = couponList.get(position);
-        holder.coupontitle.setText(coupon.getTitle());
-        holder.coupondate.setText(coupon.getCreatedon());
-        holder.coupons_item.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull Gamecouponlistholder holder, int position) {
+        GameCoupon coupon = gamecouponList.get(position);
+        isactive = coupon.isactive;
+        holder.gamecoupontitle.setText(coupon.getTitle());
+        holder.gamecouponfrom_to.setText("Written by " + coupon.writtenby);
+        holder.gamecoupons_item.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, coupondetail.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(context, gamecoupondetail.class);
                 intent.putExtra("coupontitle", coupon.getTitle());
                 intent.putExtra("coupondate", coupon.getCreatedon());
                 intent.putExtra("coupondesc", coupon.getDesc());
                 intent.putExtra("writtenby", coupon.getWrittenby());
+                intent.putExtra("writtento", coupon.getWrittento());
                 intent.putExtra("curusername", curusername);
                 intent.putExtra("curuserid", curuserid);
+                intent.putExtra("isactive", isactive);
                 context.startActivity(intent);
-                ((frienddetail)context).finish();
+                ((gamecoupons)context).finish();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return couponList.size();
+        return gamecouponList.size();
     }
 }
-
-class Couponlistholder extends RecyclerView.ViewHolder {
-    CardView coupons_item;
-    TextView coupontitle, coupondate;
-    public Couponlistholder(@NonNull View itemView) {
+class Gamecouponlistholder extends RecyclerView.ViewHolder {
+    CardView gamecoupons_item;
+    TextView gamecoupontitle, gamecouponfrom_to;
+    public Gamecouponlistholder(@NonNull View itemView) {
         super(itemView);
-        coupons_item = itemView.findViewById(R.id.coupons_item);
-        coupontitle = itemView.findViewById(R.id.coupontitle);
-        coupondate = itemView.findViewById(R.id.coupondate);
+        gamecoupons_item = itemView.findViewById(R.id.gamecoupons_item);
+        gamecoupontitle = itemView.findViewById(R.id.gamecoupontitle);
+        gamecouponfrom_to = itemView.findViewById(R.id.gamecouponfrom_to);
     }
 }
