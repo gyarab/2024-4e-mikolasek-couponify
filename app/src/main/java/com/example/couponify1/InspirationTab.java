@@ -140,10 +140,10 @@ public class InspirationTab extends AppCompatActivity {
         if (numoffriends > numofcouple) {
             mostliked = "friends";
         }
-        if (numoffamily > numoffriends) {
+        if (numoffamily > Math.max(numoffriends, numofcouple)) {
             mostliked = "family";
         }
-        if (numofwork > numoffamily) {
+        if (numofwork > Math.max(numoffamily, Math.max(numoffriends, numofcouple))) {
             mostliked = "work";
         }
         //first fill list with coupons of most liked genre, then the rest
